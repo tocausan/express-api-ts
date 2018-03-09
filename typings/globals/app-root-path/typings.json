@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/fc595bd854e0f619b538277f165e7537aa44255e/app-root-path/app-root-path.d.ts",
+    "raw": "registry:dt/app-root-path#1.2.1+20160719232327",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/fc595bd854e0f619b538277f165e7537aa44255e/app-root-path/app-root-path.d.ts"
+  }
+}
