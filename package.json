@@ -1,7 +1,26 @@
 {
-  "name": "server",
-  "version": "0.0.0",
+  "name": "webpack-express-typescript-swagger-api",
+  "version": "0.1.0",
   "private": true,
+  "description": "webpack-express-typescript-swagger-api",
+  "main": "webpack.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tocausan/webpack-express-typescript-swagger-api.git"
+  },
+  "keywords": [
+    "webpack",
+    "express",
+    "typescript",
+    "swagger",
+    "api"
+  ],
+  "author": "tocausan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tocausan/webpack-express-typescript-swagger-api/issues"
+  },
+  "homepage": "https://github.com/tocausan/webpack-express-typescript-swagger-api#readme",
   "scripts": {
     "start": "node dist/bundle.js",
     "test": "nyc mocha",
