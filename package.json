@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "webpack-express-typescript-swagger-api",
-  "main": "webpack.config.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tocausan/webpack-express-typescript-swagger-api.git"
