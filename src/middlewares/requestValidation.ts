@@ -4,9 +4,10 @@ import {Config} from '../config';
 import {AuthController} from '../controllers';
 import {UserRoleEnums} from "../enums";
 import {Translation} from "../translations";
-import {User} from "../models";
+import {DebugConsole, User} from "../models";
 
 export const RequestValidationMiddleware = (req: any, res: any, next: any) => {
+    new DebugConsole('RequestValidationMiddleware');
 
     // We skip the token outh for [OPTIONS] requests.
     //if(req.method == 'OPTIONS') next();

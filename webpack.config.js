@@ -40,7 +40,11 @@ module.exports = {
                     loader: 'ts-loader',
                 }
             ]
-        }]
+        },
+            {
+                test: /\.yaml/,
+                use: [ 'json-loader', 'yaml-frontmatter-loader' ]
+            }]
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),

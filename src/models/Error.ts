@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 export class ErrorApi extends Error{
     status: number;
     message: string;

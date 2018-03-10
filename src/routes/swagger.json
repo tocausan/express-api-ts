@@ -87,15 +87,87 @@
         }
       },
       "post": {
-        "operationId": "admin/user",
+        "operationId": "admin/users",
         "parameters": [
           {
-            "name": "admin/user",
+            "name": "user",
             "in": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/User"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/{username}": {
+      "get": {
+        "operationId": "admin/user/{username}",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "admin/user/{username}",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -198,6 +270,25 @@
             },
             "role": {
               "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "UserUpdate": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/UserUpdate"
+        },
+        {
+          "required": [],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object"
             }
           }
         }

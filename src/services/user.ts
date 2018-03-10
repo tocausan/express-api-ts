@@ -1,13 +1,13 @@
 import {Config} from '../config';
 import {DatabaseDataAccess} from '../data-access';
-import {User, Password} from '../models';
+import {User, Password, DebugConsole} from '../models';
 import {Translation} from "../translations";
-import {ErrorApi} from "../models/Error";
 import {EncryptionServices} from "./encryption";
 
 export const UserServices = {
 
     insertOne: function (data: any) {
+        new DebugConsole('UserServices/insertOne');
         return new Promise((resolve, reject) => {
             if (data && data.username) {
                 let user = new User(data);
@@ -31,18 +31,22 @@ export const UserServices = {
     },
 
     findAll: function () {
+        new DebugConsole('UserServices/findAll');
         return DatabaseDataAccess.find(Config.database.collections.users);
     },
 
     findOneByUsername: function (username: string) {
+        new DebugConsole('UserServices/findOneByUsername');
         return DatabaseDataAccess.findOne(Config.database.collections.users, {username: username})
     },
 
     findOneAndUpdateByUsername: function (username: string, update: string) {
+        new DebugConsole('UserServices/findOneAndUpdateByUsername');
         return DatabaseDataAccess.findOneAndUpdate(Config.database.collections.users, {username: username}, update);
     },
 
     findOneAndDeleteByUsername: function (username: string) {
+        new DebugConsole('UserServices/findOneAndDeleteByUsername');
         return DatabaseDataAccess.findOneAndDelete(Config.database.collections.users, {username: username});
     }
 };

@@ -1,11 +1,12 @@
 import {ErrorController} from './';
 import {AuthServices} from '../services';
-import {Token, User} from "../models";
+import {DebugConsole, Token, User} from "../models";
 import * as express from "express";
 
 export const AuthController = {
 
     signin: (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        new DebugConsole('AuthController/signin');
         let credential = {
             username: req.body.username,
             password: req.body.password,
@@ -23,6 +24,7 @@ export const AuthController = {
     },
 
     login: (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        new DebugConsole('AuthController/login');
         let credential = {
             username: req.body.username,
             password: req.body.password
@@ -40,6 +42,7 @@ export const AuthController = {
     },
 
     validateUser: (key: string) => {
+        new DebugConsole('AuthController/validateUser');
         return new User(null);
     }
 };

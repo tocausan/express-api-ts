@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
+import {DebugConsole} from "../models";
 
 export const JsonDataAccess = {
     writeJsonFile: (path: string, data: any): Promise<any> => {
+        new DebugConsole('JsonDataAccess/writeJsonFile');
         return new Promise((resolve, reject) => {
 
             JSON.stringify(data) ? reject('Expected json content') : null;
@@ -16,6 +18,7 @@ export const JsonDataAccess = {
         });
     },
     readFile: (path: string): Promise<any> => {
+        new DebugConsole('JsonDataAccess/readFile');
         return new Promise((resolve, reject) => {
             let fileFormat: string = _.last(path.split('.'));
             fileFormat !== 'json' ? reject('This is not \'.json\' file') : null;

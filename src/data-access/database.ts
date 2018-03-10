@@ -1,8 +1,10 @@
 import * as mongoDb from 'mongodb';
 import {Config} from '../config';
+import {DebugConsole} from "../models";
 
 export const DatabaseDataAccess = {
     isConnected: (): Promise<boolean> => {
+        new DebugConsole('DatabaseDataAccess/isConnected');
         return new Promise((resolve, reject) => {
             mongoDb.connect(Config.database.path, (err, database) => {
                 if (err) reject(false);
@@ -11,6 +13,7 @@ export const DatabaseDataAccess = {
         });
     },
     insertMany: (collection: string, data: any): Promise<any[]> => {
+        new DebugConsole('DatabaseDataAccess/insertMany');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -28,6 +31,7 @@ export const DatabaseDataAccess = {
         });
     },
     insertOne: (collection: string, data: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/insertOne');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -44,6 +48,7 @@ export const DatabaseDataAccess = {
         });
     },
     insertOneIfNotExist: (collection: string, filter: any, data: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/insertOneIfNotExist');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -70,6 +75,7 @@ export const DatabaseDataAccess = {
         });
     },
     find: (collection: string): Promise<any[]> => {
+        new DebugConsole('DatabaseDataAccess/find');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -85,6 +91,7 @@ export const DatabaseDataAccess = {
         });
     },
     findOne: (collection: string, filter: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/findOne');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -101,6 +108,7 @@ export const DatabaseDataAccess = {
         });
     },
     findOneAndUpdate: (collection: string, filter: any, update: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/findOneAndUpdate');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -117,6 +125,7 @@ export const DatabaseDataAccess = {
         });
     },
     findOneAndUpdateOrInsert: (collection: string, filter: any, update: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/findOneAndUpdateOrInsert');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {
@@ -139,6 +148,7 @@ export const DatabaseDataAccess = {
         });
     },
     findOneAndDelete: (collection: string, filter: any): Promise<any> => {
+        new DebugConsole('DatabaseDataAccess/findOneAndDelete');
         return new Promise((resolve, reject) => {
             mongoDb.MongoClient.connect(Config.database.path, (err, database) => {
                 if (err) {

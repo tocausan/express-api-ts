@@ -18,8 +18,8 @@ export const Routes = express.Router()
 
     .get(baseUrl + '/admin/users', UserController.getUsers)
     .post(baseUrl + '/admin/users', UserController.createUser)
+    .put(baseUrl + '/admin/users', UserController.updateUser)
     .get(baseUrl + '/admin/user/:username', UserController.getUser)
-    .put(baseUrl + '/admin/user/:username', UserController.updateUser)
     .delete(baseUrl + '/admin/user/:username', UserController.deleteUser)
 
     .use(ErrorController.error404)
