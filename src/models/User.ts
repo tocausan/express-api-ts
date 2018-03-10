@@ -21,4 +21,17 @@ export class User {
         this.language = !_.isNil(data) && !_.isNil(data.language) ? data.language : LanguageEnums.EN_US;
         this.role = !_.isNil(data) && !_.isNil(data.role) ? data.role : UserRoleEnums.PUBLIC;
     }
-};
+
+    toPublic(){
+        return this.role = UserRoleEnums.PUBLIC;
+    }
+    toMember(){
+        return this.role = UserRoleEnums.MEMBER;
+    }
+    toManager(){
+        return this.role = UserRoleEnums.MANAGER;
+    }
+    toAdmin(){
+        return this.role = UserRoleEnums.ADMIN;
+    }
+}

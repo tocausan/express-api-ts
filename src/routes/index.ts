@@ -11,8 +11,8 @@ export const Routes = express.Router()
         return res.redirect(baseUrl + '/');
     })
 
-    .post(baseUrl + '/login', AuthController.login)
     .post(baseUrl + '/signin', AuthController.signin)
+    .post(baseUrl + '/login', AuthController.login)
 
     .all(baseUrl + '/admin', [RequestValidationMiddleware])
 

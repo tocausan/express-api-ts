@@ -7,6 +7,7 @@ import * as bodyParser from 'body-parser';
 import * as sassMiddleware from 'node-sass-middleware';
 import * as helmet from 'helmet';
 import {Routes} from './routes';
+import {Swagger} from "./routes/swagger";
 
 export const App = express()
     .use(logger('dev'))
@@ -26,6 +27,7 @@ export const App = express()
      .set('view engine', 'ejs')
      **/
 
+    .use('/', Swagger)
     .use('/', Routes)
 
     // TLS security

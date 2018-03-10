@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as crypto from 'crypto';
+import {EncryptionServices} from "../services";
 
 export class Password {
     iterations: number;
@@ -14,31 +15,20 @@ export class Password {
         this.salt = !_.isNil(data) && !_.isNil(data.salt) ? data.salt : this.generateSalt();
         this.username = !_.isNil(data) && !_.isNil(data.username) ? data.username : '';
         this.password = !_.isNil(data) && !_.isNil(data.password) ? data.password : '';
-        this.passwordAttempt = !_.isNil(data) && !_.isNil(data.passwordAttempt) ? data.passwordAttempt : '';
-        this.hash = !_.isNil(data) && !_.isNil(data.hash) ? data.hash : '';
+        this.hash = !_.isNil(data) && !_.isNil(data.hash) ? data.hash : this.generateHash(this.password);
     };
 
     generateSalt(): string {
-        return crypto.randomBytes(this.iterations).toString('base64');
+        return EncryptionServices.hash(EncryptionServices.randomSecret(this.iterations), this.iterations);
     };
 
-    hashPassword(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            crypto.pbkdf2(this.password, this.salt, this.iterations, 512, 'sha512', (err, result) => {
-                if (err) reject(err);
-                this.hash = result.toString('base64');
-                resolve(result.toString('base64'));
-            });
-        });
-    };
+    generateHash(toHash: string): string {
+        return EncryptionServices.hash(toHash, this.iterations);
+    }
 
-    comparePassword(): Promise<boolean> {
+    comparePassword(password: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            crypto.pbkdf2(this.passwordAttempt, this.salt, this.iterations, 512, 'sha512', (err, result) => {
-                if (err) reject(err);
-                if (_.isEmpty(this.hash)) console.log('Password hash is empty');
-                resolve(this.hash === result.toString('base64'));
-            });
+            resolve(this.generateHash(password) === this.hash);
         });
     }
 }
