@@ -58,7 +58,7 @@ export const DatabaseDataAccess = {
                             });
                         } else {
                             reject({
-                                error: 'data already exist',
+                                message: 'data already exist',
                                 data: data
                             });
                         }

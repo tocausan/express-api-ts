@@ -1,33 +1,11 @@
 import {ErrorController} from './';
 import {AuthServices} from '../services';
-import {User} from "../models/User";
+import {Token, User} from "../models";
 import * as express from "express";
 
 export const AuthController = {
 
-    login: function (req: express.Request, res: express.Response, next: express.NextFunction) {
-        let credential = {
-            username: req.body.username,
-            password: req.body.password
-        };
-
-        console.log(credential)
-
-        if (credential.username && credential.password) {
-            AuthServices.login(credential).then((result) => {
-                console.log(result)
-
-                return res.json(result);
-            }, () => {
-                return ErrorController.error401_invalid(req, res, next);
-            });
-        } else {
-            ErrorController.error401_empty(req, res, next);
-        }
-
-    },
-
-    signin: function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    signin: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         let credential = {
             username: req.body.username,
             password: req.body.password,
@@ -43,6 +21,24 @@ export const AuthController = {
             return ErrorController.error401_invalid(req, res, next);
         });
     },
+
+    login: (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        let credential = {
+            username: req.body.username,
+            password: req.body.password
+        };
+
+        if (credential.username && credential.password) {
+            AuthServices.login(credential).then((result: Token) => {
+                return res.json(result);
+            }, () => {
+                return ErrorController.error401_invalid(req, res, next);
+            });
+        } else {
+            ErrorController.error401_empty(req, res, next);
+        }
+    },
+
     validateUser: (key: string) => {
         return new User(null);
     }

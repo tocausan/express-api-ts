@@ -4,7 +4,11 @@ import * as express from "express";
 
 export const UserController = {
     createUser: function (req: express.Request, res: express.Response, next: express.NextFunction) {
-        return UserServices.insertOne(req.body);
+        return UserServices.insertOne(req.body).then(result => {
+            res.json(result);
+        }, e => {
+            return ErrorController.errorHandler(e, req, res);
+        });
     },
     getUsers: function (req: express.Request, res: express.Response, next: express.NextFunction) {
         return UserServices.findAll().then(result => {

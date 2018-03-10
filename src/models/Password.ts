@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import * as crypto from 'crypto';
 import {EncryptionServices} from "../services";
 
 export class Password {

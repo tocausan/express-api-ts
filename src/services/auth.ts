@@ -10,7 +10,6 @@ export const AuthServices = {
             DatabaseDataAccess.findOne(Config.database.collections.passwords, {username: data.username}).then(passwordResult => {
                 let password = new Password(passwordResult);
                 password.comparePassword(data.password).then(compareResult => {
-
                     if (!compareResult) reject(Translation.INVALID_CREDENTIALS);
                     let token = new Token(data);
                     DatabaseDataAccess.findOneAndUpdateOrInsert(Config.database.collections.tokens, {username: data.username}, token).then(tokenResult => {
