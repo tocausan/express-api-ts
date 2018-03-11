@@ -1,4 +1,4 @@
-import {EnvironmentEnums} from "../enums";
+import {EnvironmentEnums, LanguageEnums} from "../enums";
 
 export const Config = {
     environment: EnvironmentEnums.DEVELOPMENT,
@@ -26,6 +26,7 @@ export const Config = {
         algorithm: 'aes192',
         hash: 'sha512',
         iterations: 16
-    }
+    },
+    language: LanguageEnums.EN_US
 };
 

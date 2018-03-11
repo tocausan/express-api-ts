@@ -1,2 +1,2 @@
-export * from './corsHeader';
-export * from './requestValidation';
+export * from './header';
+export * from './validation';

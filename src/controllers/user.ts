@@ -16,7 +16,7 @@ export const UserController = {
 
     createUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('UserController/createUser');
-        return UserServices.insertOne(req.body).then(result => {
+        return UserServices.insertOne(req.body.data).then(result => {
             res.json(result);
         }, e => {
             return ErrorController.errorHandler(e, req, res);
@@ -25,7 +25,7 @@ export const UserController = {
 
     updateUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('UserController/updateUser');
-        return UserServices.findOneAndUpdateByUsername(req.body.username, req.body.data).then(result => {
+        return UserServices.findOneAndUpdateByUsername(req.body.user.username, req.body.data).then(result => {
             res.json(result);
         }, () => {
             return ErrorController.error500(req, res, next);
@@ -34,7 +34,7 @@ export const UserController = {
 
     getUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('UserController/getUser');
-        return UserServices.findOneByUsername(req.params.username).then(result => {
+        return UserServices.findOneByUsername(req.body.user.username).then(result => {
             res.json(result);
         }, () => {
             return ErrorController.error500(req, res, next);
@@ -43,7 +43,7 @@ export const UserController = {
 
     deleteUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('UserController/deleteUser');
-        return UserServices.findOneAndDeleteByUsername(req.params.username).then(result => {
+        return UserServices.findOneAndDeleteByUsername(req.body.user.username).then(result => {
             res.json(result);
         }, () => {
             return ErrorController.error500(req, res, next);

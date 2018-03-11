@@ -1,8 +1,9 @@
 import {DebugConsole} from "../models";
+import * as express from "express";
 
-export const CorsHeaderMiddleware = {
-    enableCORS: (req: any, res: any, next: any) => {
-        new DebugConsole('CorsHeaderMiddleware/enableCORS');
+export const HeaderMiddleware = {
+    enableCORS: (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        new DebugConsole('HeaderMiddleware/enableCORS');
 
         res.header('Access-Control-Allow-Origin', "*");
         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');

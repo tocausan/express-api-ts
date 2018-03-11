@@ -32,7 +32,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Token"
             }
           },
           "default": {
@@ -59,7 +59,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Token"
             }
           },
           "default": {
@@ -70,31 +70,16 @@
         }
       }
     },
-    "/admin/users": {
-      "get": {
-        "operationId": "admin/users",
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "default": {
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
+    "/member/profile": {
       "post": {
-        "operationId": "admin/users",
+        "operationId": "member/profile",
         "parameters": [
           {
-            "name": "user",
+            "name": "get profile",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Request"
             }
           }
         ],
@@ -111,10 +96,235 @@
           }
         }
       },
-      "put": {
+      "/admin/users": {
+        "get": {
+          "operationId": "admin/users",
+          "responses": {
+            "200": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "default": {
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        },
+        "post": {
+          "operationId": "admin/users",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "default": {
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        },
+        "put": {
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserUpdate"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "default": {
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/user/{username}": {
+        "get": {
+          "operationId": "admin/user/{username}",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "default": {
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        },
+        "delete": {
+          "operationId": "admin/user/{username}",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "default": {
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/member/profile/update": {
+      "post": {
+        "operationId": "member/profile/update",
         "parameters": [
           {
-            "name": "user",
+            "name": "update profile",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProfileUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/profile/delete": {
+      "post": {
+        "operationId": "member/profile/delete",
+        "parameters": [
+          {
+            "name": "delete profile",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "post": {
+        "operationId": "admin/users",
+        "parameters": [
+          {
+            "name": "get users",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/create": {
+      "post": {
+        "operationId": "admin/users/create",
+        "parameters": [
+          {
+            "name": "create user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/user/update": {
+      "post": {
+        "operationId": "admin/users/update",
+        "parameters": [
+          {
+            "name": "update user",
             "in": "body",
             "required": true,
             "schema": {
@@ -136,38 +346,17 @@
         }
       }
     },
-    "/admin/user/{username}": {
-      "get": {
-        "operationId": "admin/user/{username}",
+    "/admin/user/delete": {
+      "post": {
+        "operationId": "admin/users/delete",
         "parameters": [
           {
-            "name": "username",
-            "in": "path",
+            "name": "delete user",
+            "in": "body",
             "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserDelete"
             }
-          },
-          "default": {
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "admin/user/{username}",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -234,6 +423,76 @@
         }
       ]
     },
+    "Token": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Token"
+        },
+        {
+          "required": [
+            "username",
+            "token",
+            "creation",
+            "expiration"
+          ],
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            },
+            "creation": {
+              "type": "string"
+            },
+            "expiration": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "Request": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Request"
+        },
+        {
+          "required": [
+            "token"
+          ],
+          "properties": {
+            "token": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "ProfileUpdate": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProfileUpdate"
+        },
+        {
+          "required": [
+            "token",
+            "data"
+          ],
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
     "User": {
       "type": "object",
       "allOf": [
@@ -275,6 +534,28 @@
         }
       ]
     },
+    "UserCreate": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/UserCreate"
+        },
+        {
+          "required": [
+            "token",
+            "user"
+          ],
+          "properties": {
+            "token": {
+              "type": "object"
+            },
+            "user": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
     "UserUpdate": {
       "type": "object",
       "allOf": [
@@ -282,12 +563,41 @@
           "$ref": "#/definitions/UserUpdate"
         },
         {
-          "required": [],
+          "required": [
+            "token",
+            "user",
+            "data"
+          ],
           "properties": {
-            "username": {
-              "type": "string"
+            "token": {
+              "type": "object"
+            },
+            "user": {
+              "type": "object"
             },
             "data": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "UserDelete": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/UserDelete"
+        },
+        {
+          "required": [
+            "token",
+            "user"
+          ],
+          "properties": {
+            "token": {
+              "type": "object"
+            },
+            "user": {
               "type": "object"
             }
           }

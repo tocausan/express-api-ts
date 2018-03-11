@@ -1,26 +1,44 @@
 import * as express from 'express';
 import {Config} from '../config';
-import {CorsHeaderMiddleware, RequestValidationMiddleware} from '../middlewares';
-import {ErrorController, AuthController, UserController} from '../controllers';
+import {HeaderMiddleware, ValidationMiddleware} from '../middlewares';
+import {ErrorController, AuthController, UserController, ProfileController} from '../controllers';
+import {UserServices} from "../services";
 
-const baseUrl = Config.api.path;
+const baseUrl = Config.api.path,
+    memberUrl = baseUrl + '/member',
+    managerUrl = baseUrl + '/manager',
+    adminUrl = baseUrl + '/admin';
+
+UserServices.defaultPopulation();
 
 export const Routes = express.Router()
-    .all('/*', [CorsHeaderMiddleware.enableCORS])
+    // BASE
+    .all('/*', [HeaderMiddleware.enableCORS])
     .get('/', (req: express.Request, res: express.Response) => {
         return res.redirect(baseUrl + '/');
     })
 
+    // PUBLIC
     .post(baseUrl + '/signin', AuthController.signin)
     .post(baseUrl + '/login', AuthController.login)
 
-    .all(baseUrl + '/admin', [RequestValidationMiddleware])
+    // MEMBER
+    .all(memberUrl + '/*', [ValidationMiddleware.isMember])
+    .post(memberUrl + '/profile', ProfileController.getProfile)
+    .post(memberUrl + '/profile/update', ProfileController.updateProfile)
+    .post(memberUrl + '/profile/delete', ProfileController.deleteProfile)
 
-    .get(baseUrl + '/admin/users', UserController.getUsers)
-    .post(baseUrl + '/admin/users', UserController.createUser)
-    .put(baseUrl + '/admin/users', UserController.updateUser)
-    .get(baseUrl + '/admin/user/:username', UserController.getUser)
-    .delete(baseUrl + '/admin/user/:username', UserController.deleteUser)
+    // MANAGER
+    .all(managerUrl + '/*', [ValidationMiddleware.isManager])
 
+    // ADMIN
+    .all(adminUrl + '/*', [ValidationMiddleware.isAdmin])
+    .post(adminUrl + '/users', UserController.getUsers)
+    .post(adminUrl + '/user', UserController.getUser)
+    .post(adminUrl + '/user/create', UserController.createUser)
+    .post(adminUrl + '/user/update', UserController.updateUser)
+    .post(adminUrl + '/user/delete', UserController.deleteUser)
+
+    // ERROR
     .use(ErrorController.error404)
     .use(ErrorController.errorHandler);

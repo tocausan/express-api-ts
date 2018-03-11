@@ -10,6 +10,7 @@ export class User {
     picture: string;
     language: string;
     role: number;
+    token: string;
 
     constructor(data: any) {
         this.username = !_.isNil(data) && !_.isNil(data.username) ? data.username : '';
@@ -20,6 +21,7 @@ export class User {
         this.picture = !_.isNil(data) && !_.isNil(data.picture) ? data.picture : '';
         this.language = !_.isNil(data) && !_.isNil(data.language) ? data.language : LanguageEnums.EN_US;
         this.role = !_.isNil(data) && !_.isNil(data.role) ? data.role : UserRoleEnums.PUBLIC;
+        this.token = !_.isNil(data) && !_.isNil(data.token) ? data.token : '';
     }
 
     toPublic(){
