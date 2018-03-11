@@ -1,6 +1,6 @@
 # webpack-express-typescript-swagger-api
 
-[![Waffle.io](https://img.shields.io/badge/Version-1.0.0-A44437.svg?style=flat-square)]()
+[![Waffle.io](https://img.shields.io/badge/Version-0.1.0-A44437.svg?style=flat-square)]()
 
 A secured API based on Express written in Typescript, powered by Webpack and mapped with Swagger.<br>
 Other features: MongoDB connection, Multi-languages, Encryption.
@@ -75,7 +75,7 @@ POST    /[APIVersion]/admin/user/delete     delete an user
 ```
 
 ## Setup
-```bash
+```text
 git clone [repo] [?name]
 cd [repo's name]
 npm install

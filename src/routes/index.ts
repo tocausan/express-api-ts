@@ -2,14 +2,14 @@ import * as express from 'express';
 import {Config} from '../config';
 import {HeaderMiddleware, ValidationMiddleware} from '../middlewares';
 import {ErrorController, AuthController, UserController, ProfileController} from '../controllers';
-import {UserServices} from "../services";
+import {PopulationServices, UserServices} from "../services";
 
 const baseUrl = Config.api.path,
     memberUrl = baseUrl + '/member',
     managerUrl = baseUrl + '/manager',
     adminUrl = baseUrl + '/admin';
 
-UserServices.defaultPopulation();
+PopulationServices.default();
 
 export const Routes = express.Router()
     // BASE
