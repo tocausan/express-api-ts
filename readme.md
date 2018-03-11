@@ -55,6 +55,7 @@ language:           EN_US
 ### API
 ```text
 GET     /                                   redirection to /[APIVersion]/
+GET     /api-docs                           swagger UI
 
 POST    /[APIVersion]/signin                signin
 POST    /[APIVersion]/login                 login
