@@ -1,7 +1,7 @@
 import {EnvironmentEnums, LanguageEnums} from "../enums";
 
 export const Config = {
-    environment: EnvironmentEnums.PRODUCTION,
+    environment: EnvironmentEnums.DEVELOPMENT,
     database: {
         path: 'mongodb://127.0.0.1:27017/',
         db: 'meimei',

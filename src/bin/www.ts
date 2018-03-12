@@ -12,7 +12,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-function normalizePort(val: string) {
+function normalizePort(val: any) {
     let port = parseInt(val, 10);
     if (isNaN(port)) return val;
     if (port >= 0) return port;
