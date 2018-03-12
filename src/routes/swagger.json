@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
+    "version": "0.1.0",
     "title": "webpack-express-typescript-swagger-api"
   },
   "host": "localhost:3000",
@@ -18,6 +18,10 @@
   "paths": {
     "/signin": {
       "post": {
+        "summary": "Signin to the API",
+        "tags": [
+          "Public"
+        ],
         "operationId": "signin",
         "parameters": [
           {
@@ -45,6 +49,10 @@
     },
     "/login": {
       "post": {
+        "summary": "Login to the API",
+        "tags": [
+          "Public"
+        ],
         "operationId": "login",
         "parameters": [
           {
@@ -72,6 +80,10 @@
     },
     "/member/profile": {
       "post": {
+        "summary": "Get member profile",
+        "tags": [
+          "Member"
+        ],
         "operationId": "member/profile",
         "parameters": [
           {
@@ -99,6 +111,10 @@
     },
     "/member/profile/update": {
       "post": {
+        "summary": "Update member profile",
+        "tags": [
+          "Member"
+        ],
         "operationId": "member/profile/update",
         "parameters": [
           {
@@ -126,6 +142,10 @@
     },
     "/member/profile/delete": {
       "post": {
+        "summary": "Delete member profile",
+        "tags": [
+          "Member"
+        ],
         "operationId": "member/profile/delete",
         "parameters": [
           {
@@ -153,6 +173,10 @@
     },
     "/admin/users": {
       "post": {
+        "summary": "Get all users",
+        "tags": [
+          "Admin"
+        ],
         "operationId": "admin/users",
         "parameters": [
           {
@@ -180,6 +204,10 @@
     },
     "/admin/user": {
       "post": {
+        "summary": "Get a user",
+        "tags": [
+          "Admin"
+        ],
         "operationId": "admin/user",
         "parameters": [
           {
@@ -207,6 +235,10 @@
     },
     "/admin/user/create": {
       "post": {
+        "summary": "Create a user",
+        "tags": [
+          "Admin"
+        ],
         "operationId": "admin/users/create",
         "parameters": [
           {
@@ -234,6 +266,10 @@
     },
     "/admin/user/update": {
       "post": {
+        "summary": "Update a user",
+        "tags": [
+          "Admin"
+        ],
         "operationId": "admin/users/update",
         "parameters": [
           {
@@ -261,6 +297,10 @@
     },
     "/admin/user/delete": {
       "post": {
+        "summary": "Delete a user",
+        "tags": [
+          "Admin"
+        ],
         "operationId": "admin/users/delete",
         "parameters": [
           {
