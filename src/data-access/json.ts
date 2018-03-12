@@ -1,36 +1,42 @@
 import * as fs from 'fs';
-import * as _ from 'lodash';
 import {DebugConsole} from "../models";
+import {Path} from "../models";
+import ErrnoException = NodeJS.ErrnoException;
+
+const format = 'json';
 
 export const JsonDataAccess = {
+
     writeJsonFile: (path: string, data: any): Promise<any> => {
         new DebugConsole('JsonDataAccess/writeJsonFile');
         return new Promise((resolve, reject) => {
+            const stringifiedData = JSON.stringify(data, null, 2),
+                dissectedPath = new Path(path);
 
-            JSON.stringify(data) ? reject('Expected json content') : null;
+            if (!fs.existsSync(dissectedPath.folderPath)) fs.mkdirSync(dissectedPath.folderPath);
 
-            let folderPath = data.slice(0, data.length - 1);
-            !fs.existsSync(folderPath) ? fs.mkdirSync(folderPath) : null;
-
-            fs.writeFile(path + '.json', JSON.stringify(data, null, 4), (err: any) => {
-                err ? reject(err) : resolve(data);
+            fs.writeFile(dissectedPath.toFormat(format), stringifiedData, (err: ErrnoException) => {
+                err ? reject(err) : resolve(stringifiedData);
             });
         });
     },
+
     readFile: (path: string): Promise<any> => {
         new DebugConsole('JsonDataAccess/readFile');
         return new Promise((resolve, reject) => {
-            let fileFormat: string = _.last(path.split('.'));
-            fileFormat !== 'json' ? reject('This is not \'.json\' file') : null;
+            const dissectedPath = new Path(path);
 
-            fs.readFile(path, 'utf8', (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    !JSON.stringify(result) ? reject('Expected json content') : null;
-                    resolve(result);
-                }
-            });
-        })
+            if (dissectedPath.isFormat(format)) {
+                fs.readFile(path, 'utf8', (err: Error, result: any) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        JSON.stringify(result) ? resolve(result) : reject('Expected json content');
+                    }
+                });
+            } else {
+                reject('Expected format "' + format + '" instead of "' + dissectedPath.fileName.format + '"');
+            }
+        });
     }
 };

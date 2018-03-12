@@ -12,7 +12,7 @@ export class User {
     role: number;
     token: string;
 
-    constructor(data: any) {
+    constructor(data?: any) {
         this.username = !_.isNil(data) && !_.isNil(data.username) ? data.username : '';
         this.firstname = !_.isNil(data) && !_.isNil(data.firstname) ? data.firstname : '';
         this.lastname = !_.isNil(data) && !_.isNil(data.lastname) ? data.lastname : '';
@@ -24,16 +24,23 @@ export class User {
         this.token = !_.isNil(data) && !_.isNil(data.token) ? data.token : '';
     }
 
-    toPublic(){
-        return this.role = UserRoleEnums.PUBLIC;
+    toPublic() {
+        this.role = UserRoleEnums.PUBLIC;
+        return this;
     }
-    toMember(){
-        return this.role = UserRoleEnums.MEMBER;
+
+    toMember() {
+        this.role = UserRoleEnums.MEMBER;
+        return this;
     }
-    toManager(){
-        return this.role = UserRoleEnums.MANAGER;
+
+    toManager() {
+        this.role = UserRoleEnums.MANAGER;
+        return this;
     }
-    toAdmin(){
-        return this.role = UserRoleEnums.ADMIN;
+
+    toAdmin() {
+        this.role = UserRoleEnums.ADMIN;
+        return this;
     }
 }

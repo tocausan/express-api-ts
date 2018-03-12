@@ -22,12 +22,12 @@
   "homepage": "https://github.com/tocausan/webpack-express-typescript-swagger-api#readme",
   "scripts": {
     "start": "node dist/bundle.js",
-    "test": "nyc mocha",
-    "watch:test": "mocha --watch",
+    "test": "mocha -r ts-node/register src/test/index.ts",
+    "watch:test": "mocha -r ts-node/register src/test/index.ts --watch",
     "build": "node node_modules/webpack/bin/webpack.js --config webpack.config.js",
     "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
     "webpack": "webpack",
-    "dev": "concurrently --kill-others \"npm run webpack\" \"nodemon\""
+    "dev": "concurrently --kill-others 'npm run webpack' 'nodemon'"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",
@@ -64,13 +64,16 @@
     "@types/node-sass-middleware": "0.0.30",
     "@types/serve-favicon": "^2.2.30",
     "awesome-typescript-loader": "^4.0.1",
+    "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.5.1",
     "express-swagger-generator": "^1.0.4",
     "html-webpack-plugin": "^3.0.6",
+    "mocha": "^5.0.4",
     "swagger-jsdoc": "^1.9.7",
     "swagger-ui-express": "^2.0.15",
     "ts-loader": "^4.0.1",
+    "ts-node": "^5.0.1",
     "typescript": "^2.7.2",
     "typings": "^2.1.1",
     "webpack-cli": "^2.0.10"

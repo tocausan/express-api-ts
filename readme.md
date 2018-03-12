@@ -3,7 +3,7 @@
 [![Waffle.io](https://img.shields.io/badge/Version-0.1.0-D07183.svg?style=flat-square)]()
 
 A secured API based on Express written in Typescript, powered by Webpack and mapped with Swagger.<br>
-Other features: MongoDB connection, Multi-languages, Encryption.
+Other features: MongoDB connection, Multi-languages, Encryption, Mocha-Chai test.
 
 ## Default config
 ```text
@@ -85,7 +85,11 @@ npm install
 # for osx
 brew services start mongodb  
 
+# for test
+npm run test
+
 # for prod
+npm build
 npm start
 
 # for dev
