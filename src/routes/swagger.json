@@ -402,7 +402,7 @@
             "type": "object",
             "$ref": "#/components/schemas/Token"
           },
-          "data": {
+          "user": {
             "type": "object",
             "$ref": "#/components/schemas/User"
           }
