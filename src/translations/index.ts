@@ -1,4 +1,4 @@
-import {ZN_CH} from "./ZH_CN";
 import {EN_US} from "./EN_US";
+import {FR_FR} from "./FR_FR";
 
-export const Translation = [EN_US, ZN_CH];
+export const Translation = [EN_US, FR_FR];

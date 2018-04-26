@@ -1,13 +1,9 @@
-import * as moment from 'moment';
-import * as jwt from 'jwt-simple';
 import {Config} from '../config';
-import {AuthController} from '../controllers';
 import {UserRoleEnums} from "../enums";
 import {Translation} from "../translations";
-import {DebugConsole, Token, User} from "../models";
 import * as express from "express";
 import {UserServices} from "../services";
-import {ErrorApi} from "../models";
+import {ErrorApi, Token, User} from "../models";
 
 export const ValidationMiddleware = {
 
@@ -20,7 +16,7 @@ export const ValidationMiddleware = {
                 return res.json(new ErrorApi(403, Translation[Config.language].UNAUTHORIZED_ACCESS));
             }
         }, e => {
-            console.log(e)
+            console.log(e);
             return res.json(new ErrorApi(403, e.message));
         });
     },

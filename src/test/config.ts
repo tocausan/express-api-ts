@@ -1,9 +1,9 @@
 import {expect} from 'chai'
-import {Config} from "../../config";
+import {Config} from "../config";
 
 describe('environment', () => {
     it('should return an number', () => {
-        expect(typeof Config.environment).to.equal('number');
+        expect(typeof Config.environment).to.equal('string');
     });
 });
 

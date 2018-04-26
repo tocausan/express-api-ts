@@ -77,21 +77,19 @@ POST    /[APIVersion]/admin/user/delete     delete an user
 
 ## Setup
 ```text
-git clone [repo] [?name]
-cd [repo's name]
+git clone https://github.com/tocausan/webpack-express-typescript-swagger-api.git
+cd webpack-express-typescript-swagger-api
 npm install
 
-# start mongodb services
-# for osx
-brew services start mongodb  
+# don't forget to start mongodb services
 
-# for test
-npm run test
+# test
+npm test
 
-# for prod
+# start
 npm build
 npm start
 
-# for dev
+# dev
 npm run dev
 ```

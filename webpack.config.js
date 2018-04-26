@@ -1,12 +1,11 @@
 const root = require('app-root-path').path,
-    HtmlWebpackPlugin = require('html-webpack-plugin'),
     CleanWebpackPlugin = require('clean-webpack-plugin'),
     webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
     watch: true,
-    entry: `${root}/src/bin/www.ts`,
+    entry: `${root}/src/app.ts`,
     target: 'node',
     devServer: {
         contentBase: './dist',
@@ -49,9 +48,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new HtmlWebpackPlugin({
-            title: 'Hot Module Replacement'
-        }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]

@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import {LanguageEnums, UserRoleEnums} from '../enums'
-import {DebugConsole} from "./index";
 
 export class User {
     username: string;
@@ -14,7 +13,6 @@ export class User {
     token: string;
 
     constructor(data?: any) {
-        new DebugConsole('User/constructor');
         this.username = !_.isNil(data) && !_.isNil(data.username) ? data.username : '';
         this.firstname = !_.isNil(data) && !_.isNil(data.firstname) ? data.firstname : '';
         this.lastname = !_.isNil(data) && !_.isNil(data.lastname) ? data.lastname : '';
@@ -27,25 +25,21 @@ export class User {
     }
 
     toPublic() {
-        new DebugConsole('User/toPublic');
         this.role = UserRoleEnums.PUBLIC;
         return this;
     }
 
     toMember() {
-        new DebugConsole('User/toMember');
         this.role = UserRoleEnums.MEMBER;
         return this;
     }
 
     toManager() {
-        new DebugConsole('User/toManager');
         this.role = UserRoleEnums.MANAGER;
         return this;
     }
 
     toAdmin() {
-        new DebugConsole('User/toAdmin');
         this.role = UserRoleEnums.ADMIN;
         return this;
     }

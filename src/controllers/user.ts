@@ -1,12 +1,10 @@
 import {UserServices} from '../services';
 import {ErrorController} from './';
 import * as express from "express";
-import {DebugConsole} from "../models";
 
 export const UserController = {
 
-    getUsers: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        new DebugConsole('UserController/getUsers');
+    getUsers: (req: express.Request, res: express.Response) => {
         return UserServices.findAll().then(result => {
             return res.json(result);
         }, err => {
@@ -15,8 +13,7 @@ export const UserController = {
         });
     },
 
-    createUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        new DebugConsole('UserController/createUser');
+    createUser: (req: express.Request, res: express.Response) => {
         return UserServices.insertOne(req.body.data).then(result => {
             return res.json(result);
         }, err => {
@@ -24,8 +21,7 @@ export const UserController = {
         });
     },
 
-    updateUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        new DebugConsole('UserController/updateUser');
+    updateUser: (req: express.Request, res: express.Response) => {
         return UserServices.findOneAndUpdateByUsername(req.body.user.username, req.body.data).then(result => {
             return res.json(result);
         }, err => {
@@ -33,8 +29,7 @@ export const UserController = {
         });
     },
 
-    getUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        new DebugConsole('UserController/getUser');
+    getUser: (req: express.Request, res: express.Response) => {
         return UserServices.findOneByUsername(req.body.user.username).then(result => {
             return res.json(result);
         }, err => {
@@ -42,8 +37,7 @@ export const UserController = {
         });
     },
 
-    deleteUser: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        new DebugConsole('UserController/deleteUser');
+    deleteUser: (req: express.Request, res: express.Response) => {
         return UserServices.findOneAndDeleteByUsername(req.body.user.username).then(result => {
             return res.json(result);
         }, err => {
