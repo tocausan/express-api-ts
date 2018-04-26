@@ -1,6 +1,7 @@
-# webpack-express-typescript-swagger-api
+[![Build](https://img.shields.io/badge/build-passing-green.svg?style=flat)](http://tocausan.github.io)
+[![Build](https://img.shields.io/badge/version-0.1.0-green.svg?style=flat-square)](http://tocausan.github.io)
 
-[![Waffle.io](https://img.shields.io/badge/Version-0.1.0-D07183.svg?style=flat-square)]()
+# webpack-express-typescript-swagger-api
 
 A secured API based on Express written in Typescript, powered by Webpack and mapped with Swagger.<br>
 Other features: MongoDB connection, Multi-languages, Encryption, Mocha-Chai test.
