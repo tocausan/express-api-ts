@@ -1,5 +1,5 @@
-[![Build](https://img.shields.io/badge/build-passing-green.svg?style=flat)](http://tocausan.github.io)
-[![Build](https://img.shields.io/badge/version-0.1.0-green.svg?style=flat-square)](http://tocausan.github.io)
+[![Build](https://img.shields.io/badge/build-passing-green.svg?style=flat-square)](http://tocausan.github.io)
+[![Build](https://img.shields.io/badge/version-0.1.0-D07183.svg?style=flat-square)](http://tocausan.github.io)
 
 # webpack-express-typescript-swagger-api
 
