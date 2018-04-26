@@ -1,7 +1,7 @@
 [![Build](https://img.shields.io/badge/build-passing-green.svg?style=flat-square)](http://tocausan.github.io)
 [![Build](https://img.shields.io/badge/version-0.1.0-D07183.svg?style=flat-square)](http://tocausan.github.io)
 
-# webpack-express-typescript-swagger-api
+# express-api-ts
 
 A secured API based on Express written in Typescript, powered by Webpack and mapped with Swagger.<br>
 Other features: MongoDB connection, Multi-languages, Encryption, Mocha-Chai test.
@@ -78,8 +78,8 @@ POST    /[APIVersion]/admin/user/delete     delete an user
 
 ## Setup
 ```text
-git clone https://github.com/tocausan/webpack-express-typescript-swagger-api.git
-cd webpack-express-typescript-swagger-api
+git clone https://github.com/tocausan/express-api-ts.git
+cd express-api-ts
 npm install
 
 # don't forget to start mongodb services
