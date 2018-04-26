@@ -1,8 +1,9 @@
 import * as mongoDb from 'mongodb';
 import {Config} from '../config';
-import {DebugConsole} from "../models";
+import {DebugConsole, ErrorApi} from "../models";
 
 export const DatabaseDataAccess = {
+
     isConnected: (): Promise<boolean> => {
         new DebugConsole('DatabaseDataAccess/isConnected');
         return new Promise((resolve, reject) => {
@@ -12,6 +13,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     insertMany: (collection: string, data: any): Promise<any[]> => {
         new DebugConsole('DatabaseDataAccess/insertMany');
         return new Promise((resolve, reject) => {
@@ -30,6 +32,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     insertOne: (collection: string, data: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/insertOne');
         return new Promise((resolve, reject) => {
@@ -47,6 +50,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     insertOneIfNotExist: (collection: string, filter: any, data: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/insertOneIfNotExist');
         return new Promise((resolve, reject) => {
@@ -62,10 +66,7 @@ export const DatabaseDataAccess = {
                                 reject(e);
                             });
                         } else {
-                            reject({
-                                message: 'data already exist',
-                                data: data
-                            });
+                            reject(new ErrorApi(500, 'data already exist'));
                         }
                     }, e => {
                         reject(e);
@@ -74,6 +75,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     find: (collection: string): Promise<any[]> => {
         new DebugConsole('DatabaseDataAccess/find');
         return new Promise((resolve, reject) => {
@@ -90,6 +92,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     findOne: (collection: string, filter: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/findOne');
         return new Promise((resolve, reject) => {
@@ -107,6 +110,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     findOneAndUpdate: (collection: string, filter: any, update: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/findOneAndUpdate');
         return new Promise((resolve, reject) => {
@@ -124,6 +128,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     findOneAndUpdateOrInsert: (collection: string, filter: any, update: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/findOneAndUpdateOrInsert');
         return new Promise((resolve, reject) => {
@@ -147,6 +152,7 @@ export const DatabaseDataAccess = {
             });
         });
     },
+
     findOneAndDelete: (collection: string, filter: any): Promise<any> => {
         new DebugConsole('DatabaseDataAccess/findOneAndDelete');
         return new Promise((resolve, reject) => {
@@ -154,12 +160,16 @@ export const DatabaseDataAccess = {
                 if (err) {
                     reject(err);
                 } else {
-                    database.db(Config.database.db).collection(collection).findOneAndDelete(filter).then(result => {
-                        resolve(result);
-                        database.close();
-                    }, e => {
-                        reject(e);
-                    });
+                    database.db(Config.database.db)
+                        .collection(collection)
+                        .findOneAndDelete(filter)
+                        .then((result: any) => {
+                            console.log(result)
+                            resolve(result);
+                            database.close();
+                        }, e => {
+                            reject(e);
+                        });
                 }
             });
         });

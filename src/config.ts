@@ -1,10 +1,10 @@
-import {EnvironmentEnums, LanguageEnums} from "../enums";
+import {LanguageEnums} from "./enums";
 
 export const Config = {
-    environment: EnvironmentEnums.DEVELOPMENT,
+    environment: process.env.ENV || 'dev',
     database: {
         path: 'mongodb://127.0.0.1:27017/',
-        db: 'meimei',
+        db: 'hello',
         collections: {
             test: 'test',
             users: 'users',
@@ -17,7 +17,7 @@ export const Config = {
         expiration: 7
     },
     api: {
-        port: 3000,
+        port: process.env.PORT || 3000,
         version: 1,
         path: '/api/1'
     },

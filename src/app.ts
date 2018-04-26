@@ -10,7 +10,7 @@ import {Routes} from './routes';
 import {Swagger} from "./routes/swagger";
 
 export const App = express()
-    .use(logger('dev'))
+    .use(logger(process.env.ENV || 'dev'))
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended: false}))
     .use(cookieParser())

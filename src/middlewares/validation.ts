@@ -17,10 +17,11 @@ export const ValidationMiddleware = {
             if (user && user.role >= role) {
                 return next();
             } else {
-                return res.json(new ErrorApi(403, Translation[Config.language].UNAUTHORIZED_ACCESS, null, null));
+                return res.json(new ErrorApi(403, Translation[Config.language].UNAUTHORIZED_ACCESS));
             }
         }, e => {
-            return res.json(new ErrorApi(403, e.message, null, null));
+            console.log(e)
+            return res.json(new ErrorApi(403, e.message));
         });
     },
 

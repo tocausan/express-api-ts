@@ -7,7 +7,9 @@ import {EncryptionServices} from "./encryption";
 export const UserServices = {
 
     isTokenValid: (token: Token): Promise<User> => {
+        new DebugConsole('UserServices/isTokenValid');
         return new Promise((resolve, reject) => {
+            console.log(token.isValid())
             if (token.isValid()) {
                 UserServices.findOneByUsername(token.username).then((user: User) => {
                     if (user.token === token.token) {
@@ -17,7 +19,7 @@ export const UserServices = {
                     }
                 });
             } else {
-                return reject({message: Translation[Config.language].EXPIRED_TOKEN});
+                return reject({message: Translation[Config.language].INVALID_TOKEN});
             }
         });
     },
@@ -37,13 +39,13 @@ export const UserServices = {
                             reject(e);
                         });
                     } else {
-                        reject({message: Translation[Config.language].SOMETHING_WENT_WRONG});
+                        reject(new Error('User not inserted'));
                     }
                 }, e => {
                     reject(e);
                 });
             } else {
-                reject({message: Translation[Config.language].EMPTY_DATA});
+                reject(new Error(Translation[Config.language].EMPTY_DATA));
             }
         });
     },

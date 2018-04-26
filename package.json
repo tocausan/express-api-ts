@@ -27,7 +27,7 @@
     "build": "node node_modules/webpack/bin/webpack.js --config webpack.config.js",
     "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
     "webpack": "webpack",
-    "dev": "concurrently --kill-others 'npm run webpack' 'nodemon'"
+    "dev": "concurrently --kill-others 'npm run webpack' 'ENV=dev nodemon'"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",

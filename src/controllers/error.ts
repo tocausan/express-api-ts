@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import {Translation} from "../translations";
 import * as express from "express";
 import {DebugConsole, ErrorApi} from "../models";
@@ -8,32 +7,37 @@ export const ErrorController = {
 
     error401_invalid: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('ErrorController/error401_invalid');
-        return res.json(new ErrorApi(401, Translation[Config.language].INVALID_CREDENTIALS, null, null));
+        const err = new ErrorApi(401, Translation[Config.language].INVALID_CREDENTIALS);
+        return res.status(err.status).json(err.toJson());
     },
 
     error401_empty: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('ErrorController/error401_empty');
-        return res.json(new ErrorApi(401, Translation[Config.language].EMPTY_CREDENTIALS, null, null));
+        const err = new ErrorApi(401, Translation[Config.language].EMPTY_CREDENTIALS);
+        return res.status(err.status).json(err.toJson());
     },
 
     error403: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('ErrorController/error403');
-        return res.json(new ErrorApi(403, Translation[Config.language].UNAUTHORIZED_ACCESS, null, null));
+        const err = new ErrorApi(403, Translation[Config.language].UNAUTHORIZED_ACCESS);
+        console.log(1, err.status)
+        return res.status(err.status).json(err.toJson());
     },
 
     error404: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('ErrorController/error404');
-        return res.json(new ErrorApi(404, Translation[Config.language].PAGE_NOT_FOUND, null, null));
+        const err = new ErrorApi(404, Translation[Config.language].PAGE_NOT_FOUND);
+        return res.status(err.status).json(err.toJson());
     },
 
     error500: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new DebugConsole('ErrorController/error500');
-        return res.json(new ErrorApi(500, Translation[Config.language].ERROR_SERVER, null, null));
+        const err = new ErrorApi(500, Translation[Config.language].ERROR_SERVER);
+        return res.status(err.status).json(err.toJson());
     },
 
     errorHandler: (err: ErrorApi, req: express.Request, res: express.Response) => {
         new DebugConsole('ErrorController/errorHandler');
-        const message = new ErrorApi(err.status || 500, err.message, err.data, err.stack);
-        return res.status(message.status).json(message);
+        return res.status(err.status).json(err);
     }
 };

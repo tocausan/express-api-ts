@@ -1,4 +1,5 @@
 export const LanguageEnums = {
     EN_US: 0,
-    ZH_CN: 1
+    FR_FR: 1,
+    ZH_CN: 2,
 };

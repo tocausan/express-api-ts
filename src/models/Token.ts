@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Config} from '../config';
-import {DatabaseDataAccess} from '../data-access';
 import {EncryptionServices} from "../services";
+import {DebugConsole} from "./index";
 
 export class Token {
     username: string;
@@ -11,6 +11,7 @@ export class Token {
     expiration: string;
 
     constructor(data?: any) {
+        new DebugConsole('Token/constructor');
         this.username = !_.isNil(data) && !_.isNil(data.username) ? data.username : '';
         this.creation = !_.isNil(data) && !_.isNil(data.creation) ? data.creation : moment.utc().format();
         this.expiration = !_.isNil(data) && !_.isNil(data.expiration) ? data.expiration : moment.utc(this.creation).add(Config.token.expiration, 'days').format();
@@ -18,7 +19,8 @@ export class Token {
     }
 
     public isValid(): boolean {
+        new DebugConsole('Token/isValid');
         const now = moment.utc().format();
-        return now >= this.creation && now <= this.expiration;
+        return !_.isNil(this.username) && !_.isEmpty(this.username) && now >= this.creation && now <= this.expiration;
     }
 }

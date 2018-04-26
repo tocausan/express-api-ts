@@ -10,7 +10,8 @@ module.exports = {
     target: 'node',
     devServer: {
         contentBase: './dist',
-        hot: true
+        hot: true,
+        port: 3100
     },
     externals: [
         /^[a-z\-0-9]+$/ // Ignore node_modules folder
