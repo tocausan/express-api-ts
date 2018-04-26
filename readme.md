@@ -8,10 +8,10 @@ Other features: MongoDB connection, Multi-languages, Encryption, Mocha-Chai test
 
 ## Default config
 ```text
-environment:        development,
+environment:        dev,
 database:
     path:           mongodb://127.0.0.1:27017/
-    db:             meimei
+    db:             hello
     collections:
         test:       test,
         users:      users
