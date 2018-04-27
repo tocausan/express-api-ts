@@ -1,121 +1,127 @@
 import {Config} from "../config";
-import * as mongoDb from "mongodb";
-import {ErrorApi} from "./index";
+import {MongoClient} from "mongodb";
 
 export class DbClient {
 
-    static isConnected(): Promise<boolean> {
+    static async connect(): Promise<any> {
         return new Promise((resolve, reject) => {
-            mongoDb.connect(Config.database.path, (err) => {
-                if (err) return reject(false);
-                return resolve(true);
+            MongoClient.connect(Config.database.path, (err: Error, client: any) => {
+                if (err) return reject(err);
+                return resolve(client);
             });
         });
+
     }
 
-    static insertMany(collection: string, data: any): Promise<any[]> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).insertMany(data).then(result => {
-                    client.close();
-                    return resolve(data);
-                }, e => reject(e));
-            });
-        });
+    static async isConnected(): Promise<boolean> {
+        return this.connect()
+            .then((client: any) => {
+                client.close();
+                return true;
+            })
+            .catch(() => {
+                return false;
+            })
     }
 
-    static insertOne(collection: string, data: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).insertOne(data).then(result => {
-                    client.close();
-                    return resolve(result);
-                }, e => reject(e));
-            });
-        });
-    }
-
-    static insertOneIfNotExist(collection: string, filter: any, data: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).findOne(filter).then(findResult => {
-                    if (findResult) return reject(new ErrorApi(500, 'data already exist'));
-                    return this.insertOne(collection, data)
-                        .then(() => {
-                            return resolve(data);
-                        }, e => reject(e));
-                }, e => reject(e));
-            });
-        });
-    }
-
-    static find(collection: string): Promise<any[]> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).find().toArray((error, result) => {
-                    if (error) return reject(error);
-                    client.close();
-                    return resolve(result);
-                });
-            });
-        });
-    }
-
-    static findOne(collection: string, filter: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).findOne(filter).then(result => {
-                    client.close();
-                    return resolve(result);
-                }, e => reject(e));
-            });
-        });
-    }
-
-    static findOneAndUpdate(collection: string, filter: any, update: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).findOneAndUpdate(filter, {$set: update}).then(result => {
-                    client.close();
-                    return resolve(result);
-                }, e => reject(e));
-            });
-        });
-    }
-
-    static findOneAndUpdateOrInsert(collection: string, filter: any, update: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
-                client.db(Config.database.db).collection(collection).findOneAndUpdate(filter, {$set: update}).then(result => {
-                    if (result) return resolve(update);
-                    client.db(Config.database.db).collection(collection).insertOne(update).then(() => {
+    static async insertMany(collection: string, data: any[]): Promise<any[]> {
+        return this.connect()
+            .then((client: any) => {
+                return client.db(Config.database.db)
+                    .collection(collection)
+                    .insertMany(data)
+                    .then(() => {
                         client.close();
-                        return resolve(update);
+                        return data;
                     });
-                }, e => reject(e));
-            });
-        });
+            })
     }
 
-    static findOneAndDelete(collection: string, filter: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            mongoDb.MongoClient.connect(Config.database.path, (err, client) => {
-                if (err) return reject(err);
+    static async insertOne(collection: string, data: any): Promise<any> {
+        return this.connect()
+            .then((client: any) => {
                 client.db(Config.database.db)
                     .collection(collection)
-                    .findOneAndDelete(filter)
+                    .insertOne(data).then((result: any) => {
+                    client.close();
+                    return result;
+                });
+            });
+    }
+
+    static async insertOneIfNotExist(collection: string, filter: any, data: any): Promise<any> {
+        return this.connect()
+            .then((client: any) => {
+                return client.db(Config.database.db)
+                    .collection(collection)
+                    .findOne(filter)
+                    .then((result: any) => {
+                        if (result) throw new Error('data already exist');
+                        return this.insertOne(collection, data)
+                            .then(() => {
+                                return data;
+                            });
+                    });
+            });
+    }
+
+    static async find(collection: string): Promise<any[]> {
+        return this.connect()
+            .then((client: any) => {
+                return client.db(Config.database.db)
+                    .collection(collection)
+                    .find()
+                    .toArray((err: Error, result: any) => {
+                        if (err) throw err;
+                        client.close();
+                        return result;
+                    });
+            });
+    }
+
+    static async findOne(collection: string, filter: any): Promise<any> {
+        return this.connect()
+            .then((client: any) => {
+                return client.db(Config.database.db)
+                    .collection(collection)
+                    .findOne(filter)
                     .then((result: any) => {
                         client.close();
-                        return resolve(result);
-                    }, e => reject(e));
+                        return result;
+                    });
             });
-        });
+    }
+
+    static async findOneAndUpdate(collection: string, filter: any, update: any): Promise<any> {
+        return this.connect()
+            .then((client: any) => {
+                client.db(Config.database.db)
+                    .collection(collection)
+                    .findOneAndUpdate(filter, {$set: update})
+                    .then((result: any) => {
+                        client.close();
+                        return result;
+                    });
+            });
+    }
+
+    static async findOneAndUpdateOrInsert(collection: string, filter: any, update: any): Promise<any> {
+        return this.connect()
+            .then(() => {
+                this.findOne(collection, filter)
+                    .then(async (result: any) => {
+                        if (result) return this.findOneAndUpdate(collection, filter, update);
+                        else return this.insertOne(collection, update);
+                    });
+            });
+    }
+
+    static async findOneAndDelete(collection: string, filter: any): Promise<any> {
+        return this.connect()
+            .then((client: any) => {
+                return client.db(Config.database.db)
+                    .collection(collection)
+                    .findOneAndDelete(filter);
+            })
     }
 }

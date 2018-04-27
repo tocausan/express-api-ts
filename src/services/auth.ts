@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import {Config} from '../config';
 import {User, Password, Token, DbClient} from '../models';
 import {Translation} from "../translations";
+import {Db} from "mongodb";
 
 export const AuthServices = {
 
@@ -77,7 +78,12 @@ export const AuthServices = {
                             user.token = token.token;
                             DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, user)
                                 .then(() => {
-                                    resolve(token);
+                                    DbClient.findOneAndUpdateOrInsert(Config.database.collections.tokens, {username: username}, token)
+                                        .then(() => {
+                                            return resolve(token);
+                                        }, (e: Error) => {
+                                            return reject(e);
+                                        });
                                 }, (e: Error) => {
                                     return reject(e);
                                 });
