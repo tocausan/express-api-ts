@@ -1,3 +1,4 @@
+import 'colors';
 import {User} from '../models';
 import {UserServices} from "./user";
 
@@ -10,11 +11,13 @@ export const PopulationServices = {
             {username: 'manager', password: 'manager', role: 2},
             {username: 'admin', password: 'admin', role: 3}
         ];
-        population.forEach(data => {
-            UserServices.insertOne(data).then((user: User) => {
-                console.log('-> ' + user.username + ' user added');
-            }, () => {
-            });
+        population.map(data => {
+            UserServices.insertOne(data)
+                .then((user: User) => {
+                    console.log('PopulationService: '.yellow.bold + user.username + '    added'.green);
+                }, (e: Error) => {
+                    console.log('PopulationService: '.yellow.bold + data.username.blue + '  ' + e.message.red);
+                });
         });
     },
 

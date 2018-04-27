@@ -1,7 +1,7 @@
 export class ErrorApi extends Error {
-    status: number;
-    message: string;
-    data: any;
+    public status: number;
+    public message: string;
+    public data: any;
 
     constructor(status: number, message: string, data?: any) {
         super(message);
@@ -10,7 +10,7 @@ export class ErrorApi extends Error {
         this.data = data;
     }
 
-    toJson() {
+    getAll() {
         return {
             status: this.status,
             message: this.message,

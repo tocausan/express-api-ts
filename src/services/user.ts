@@ -7,12 +7,14 @@ export const UserServices = {
 
     isTokenValid: (token: Token): Promise<User> => {
         return new Promise((resolve, reject) => {
-            console.log(token.isValid());
-            if (token.isValid()) reject({message: Translation[Config.language].INVALID_TOKEN});
-            UserServices.findOneByUsername(token.username).then((user: User) => {
-                if (user.token !== token.token) reject({message: Translation[Config.language].INVALID_TOKEN});
-                resolve(user);
-            });
+            if (token.isValid()) return reject({message: Translation[Config.language].INVALID_TOKEN});
+            UserServices.findOneByUsername(token.username)
+                .then((user: User) => {
+                    if (user.token !== token.token) return reject({message: Translation[Config.language].INVALID_TOKEN});
+                    return resolve(user);
+                }, (e: Error) => {
+                    return reject(e);
+                });
         });
     },
 
@@ -20,14 +22,20 @@ export const UserServices = {
         return new Promise((resolve, reject) => {
             if (data && data.username) {
                 let user = new User(data);
-                DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user).then((user: User) => {
-                    data.password = data.password !== null && data.password !== undefined ? data.password : EncryptionServices.randomSecret(10);
-                    let password = new Password(data);
-                    if (!user) reject(new Error('User not inserted'));
-                    DbClient.insertOneIfNotExist(Config.database.collections.passwords, {username: password.username}, password).then(() => {
-                        resolve(user);
-                    }, e => reject(e));
-                }, e => reject(e));
+                DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user)
+                    .then((user: User) => {
+                        data.password = data.password !== null && data.password !== undefined ? data.password : EncryptionServices.randomSecret(10);
+                        let password = new Password(data);
+                        if (!user) reject(new Error('User not inserted'));
+                        DbClient.insertOneIfNotExist(Config.database.collections.passwords, {username: password.username}, password)
+                            .then(() => {
+                                return resolve(user);
+                            }, (e: Error) => {
+                                return reject(e);
+                            });
+                    }, (e: Error) => {
+                        return reject(e);
+                    });
             } else {
                 reject(new Error(Translation[Config.language].EMPTY_DATA));
             }
@@ -47,10 +55,12 @@ export const UserServices = {
     },
 
     findOneAndDeleteByUsername: (username: string): Promise<any> => {
-        return DbClient.findOneAndDelete(Config.database.collections.users, {username: username}).then(() => {
-            return DbClient.findOneAndDelete(Config.database.collections.tokens, {username: username}).then(() => {
-                return DbClient.findOneAndDelete(Config.database.collections.passwords, {username: username});
+        return DbClient.findOneAndDelete(Config.database.collections.users, {username: username})
+            .then(() => {
+                return DbClient.findOneAndDelete(Config.database.collections.tokens, {username: username})
+                    .then(() => {
+                        return DbClient.findOneAndDelete(Config.database.collections.passwords, {username: username});
+                    });
             });
-        });
     }
 };

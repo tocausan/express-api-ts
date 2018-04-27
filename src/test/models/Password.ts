@@ -7,7 +7,7 @@ describe('Password', () => {
         it('should return an object', () => {
             expect(new Password())
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'password', 'hash'])
+                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
         });
     });
 
@@ -16,11 +16,10 @@ describe('Password', () => {
             const password = new Password();
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'password', 'hash'])
+                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
             expect(password.iterations).to.be.a('number');
             expect(password.salt).to.be.a('string');
             expect(password.username).to.be.a('string').to.be.equal('');
-            expect(password.password).to.be.a('string').to.be.equal('');
             expect(password.hash).to.be.a('string');
         });
     });
@@ -36,11 +35,10 @@ describe('Password', () => {
             });
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'password', 'hash'])
+                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
             expect(password.iterations).to.be.a('number').to.be.equal(1);
             expect(password.salt).to.be.a('string').to.be.equal('salt');
             expect(password.username).to.be.a('string').to.be.equal('username');
-            expect(password.password).to.be.a('string').to.be.equal('password');
             expect(password.hash).to.be.a('string').to.be.equal('hash');
         });
     });

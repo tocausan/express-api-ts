@@ -1,48 +1,92 @@
+import * as _ from 'lodash';
 import {Config} from '../config';
 import {User, Password, Token, DbClient} from '../models';
 import {Translation} from "../translations";
 
 export const AuthServices = {
 
-    signin: (data: any) => {
+    signin: (username: string, password: string, passwordConfirmation: string): Promise<Token> => {
         return new Promise((resolve, reject) => {
-            DbClient.insertOneIfNotExist(Config.database.collections.users, {username: data.username}, data).then(() => {
-                let password = new Password(data);
-                password.password = null;
-                let token = new Token(data);
-                AuthServices.setToken(data.username, token).then((setTokenResult: Token) => {
-                    resolve(setTokenResult);
-                }, e => reject(e));
-            }, e => reject(e));
+            if (_.isNil(username) || _.isNil(password) || _.isNil(passwordConfirmation)) return reject(new Error('Missing data'));
+            if (!Password.confirmNewPassword(password, passwordConfirmation)) return reject(new Error('Password not matching'));
+
+            DbClient.insertOneIfNotExist(Config.database.collections.users, {username: username}, {
+                username: username,
+                password: password
+            })
+                .then(() => {
+                    const pwd = new Password({
+                            username: username,
+                            password: password
+                        }),
+                        token = new Token({password: password});
+                    DbClient.insertOne(Config.database.collections.passwords, pwd)
+                        .then((pwdResult: any) => {
+                            AuthServices.setToken(username, token)
+                                .then((setTokenResult: Token) => {
+                                    return resolve(setTokenResult);
+                                }, (e: Error) => {
+                                    return reject(e);
+                                });
+                        }, (e: Error) => {
+                            return reject(e);
+                        });
+                }, (e: Error) => {
+                    return reject(e);
+                });
+
         });
     },
 
-    login: (data: any) => {
+    login: (username: string, password: string): Promise<Token> => {
         return new Promise((resolve, reject) => {
-            DbClient.findOne(Config.database.collections.passwords, {username: data.username}).then(findPasswordResult => {
-                let password = new Password(findPasswordResult);
-                password.comparePassword(data.password).then(comparePasswordResult => {
-                    if (!comparePasswordResult) reject(Translation[Config.language].INVALID_CREDENTIALS);
-                    let token = new Token(data);
-                    AuthServices.setToken(data.username, token).then((setTokenResult: Token) => {
-                        resolve(setTokenResult);
-                    }, e => reject(e));
-                }, e => reject(e));
-            }, e => reject(e))
+            if (_.isNil(username) || _.isNil(password)) return reject(new Error('Missing data'));
+
+            DbClient.findOne(Config.database.collections.passwords, {username: username})
+                .then(findPasswordResult => {
+                    let pwd = new Password(findPasswordResult);
+                    pwd.comparePassword(password)
+                        .then(comparePasswordResult => {
+                            if (!comparePasswordResult) return reject(Translation[Config.language].INVALID_CREDENTIALS);
+                            let token = new Token({
+                                username: username,
+                                password: password
+                            });
+                            AuthServices.setToken(username, token)
+                                .then((setTokenResult: Token) => {
+                                    resolve(setTokenResult);
+                                }, (e: Error) => {
+                                    return reject(e);
+                                });
+                        }, (e: Error) => {
+                            return reject(e);
+                        });
+                }, (e: Error) => {
+                    return reject(e);
+                });
+
         });
     },
 
-    setToken: (username: string, token: Token) => {
+    setToken: (username: string, token: Token): Promise<Token> => {
         return new Promise((resolve, reject) => {
-            DbClient.findOneAndUpdateOrInsert(Config.database.collections.tokens, {username: username}, token).then(() => {
-                DbClient.findOne(Config.database.collections.users, {username: username}).then((user: User) => {
-                    user.token = token.token;
-                    DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, user).then(() => {
-                        resolve(token);
-                    }, e => reject(e));
-                }, e => reject(e));
-            }, e => reject(e));
+            DbClient.findOneAndUpdateOrInsert(Config.database.collections.tokens, {username: username}, token)
+                .then(() => {
+                    DbClient.findOne(Config.database.collections.users, {username: username})
+                        .then((user: User) => {
+                            user.token = token.token;
+                            DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, user)
+                                .then(() => {
+                                    resolve(token);
+                                }, (e: Error) => {
+                                    return reject(e);
+                                });
+                        }, (e: Error) => {
+                            return reject(e);
+                        });
+                }, (e: Error) => {
+                    return reject(e);
+                });
         });
-
     }
 };
