@@ -5,7 +5,7 @@ import * as express from "express";
 export const UserController = {
 
     getUsers: (req: express.Request, res: express.Response) => {
-        return UserServices.findAll()
+        return UserServices.getUsers()
             .then(result => {
                 return res.json(result)
             }, (e: Error) => {
@@ -14,7 +14,7 @@ export const UserController = {
     },
 
     createUser: (req: express.Request, res: express.Response) => {
-        return UserServices.insertOne(req.body.data)
+        return UserServices.addUser(req.body.data)
             .then(result => {
                 return res.json(result)
             }, (e: Error) => {
@@ -23,7 +23,7 @@ export const UserController = {
     },
 
     updateUser: (req: express.Request, res: express.Response) => {
-        return UserServices.findOneAndUpdateByUsername(req.body.user.username, req.body.data)
+        return UserServices.updateUser(req.body.user.username, req.body.data)
             .then(result => {
                 return res.json(result)
             }, (e: Error) => {
@@ -32,7 +32,7 @@ export const UserController = {
     },
 
     getUser: (req: express.Request, res: express.Response) => {
-        return UserServices.findOneByUsername(req.body.user.username)
+        return UserServices.getUser(req.body.user.username)
             .then(result => {
                 return res.json(result)
             }, (e: Error) => {
@@ -41,7 +41,7 @@ export const UserController = {
     },
 
     deleteUser: (req: express.Request, res: express.Response) => {
-        return UserServices.findOneAndDeleteByUsername(req.body.user.username)
+        return UserServices.deleteUser(req.body.user.username)
             .then(result => {
                 return res.json(result)
             }, (e: Error) => {

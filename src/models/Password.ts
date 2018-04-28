@@ -28,7 +28,7 @@ export class Password {
         return this.generateHash(password) === this.hash
     }
 
-    static confirmNewPassword(password: string, passwordConfirmation: string): boolean {
+    static confirmPassword(password: string, passwordConfirmation: string): boolean {
         return password === passwordConfirmation;
     }
 }

@@ -1,66 +1,83 @@
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import {Config} from '../config';
 import {User, Password, Token, DbClient} from '../models';
 import {Translation} from "../translations";
-import {EncryptionServices} from "./encryption";
 
 export const UserServices = {
 
-    isTokenValid: async (username: string, token: Token): Promise<void> => {
-        return DbClient.findOne(Config.database.collections.tokens, {username: username})
-            .then((userToken: Token) => {
-                const now = moment.utc().format();
-                if (userToken &&
-                    userToken === token &&
-                    userToken.expiration < now &&
-                    userToken.creation >= now) return;
-                else throw new Error(Translation[Config.language].INVALID_TOKEN);
-            });
-    },
+        isTokenValid: async (username: string, token: string): Promise<void> => {
+            return DbClient.findOne(Config.database.collections.tokens, {username: username})
+                .then((userToken: Token) => {
+                    const now = moment.utc().format();
+                    if (userToken &&
+                        userToken.hash === token &&
+                        userToken.expiration > now &&
+                        userToken.creation <= now) return;
+                    else throw new Error(Translation[Config.language].INVALID_TOKEN);
+                });
+        },
 
-    insertOne: (data: any): Promise<User> => {
-        return new Promise((resolve, reject) => {
-            if (data && data.username) {
-                let user = new User(data);
-                DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user)
-                    .then((user: User) => {
-                        data.password = data.password !== null && data.password !== undefined ? data.password : EncryptionServices.randomSecret(10);
-                        let password = new Password(data);
-                        if (!user) reject(new Error('User not inserted'));
-                        DbClient.insertOneIfNotExist(Config.database.collections.passwords, {username: password.username}, password)
-                            .then(() => {
-                                return resolve(user);
-                            }, (e: Error) => {
-                                return reject(e);
-                            });
-                    }, (e: Error) => {
-                        return reject(e);
+        addUser: async (data: any): Promise<User> => {
+            if (_.isNil(data) || _.isNil(data.username) || _.isNil(data.password)) throw new Error(Translation[Config.language].EMPTY_DATA);
+            const user = new User(data);
+            const password = new Password(data);
+            return DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user)
+                .then((user: User) => {
+                    return DbClient.insertOneIfNotExist(Config.database.collections.passwords, {username: password.username}, password)
+                        .then(() => {
+                            return user;
+                        });
+                });
+
+        },
+
+        getUsers: (): Promise<User[]> => {
+            return DbClient.find(Config.database.collections.users)
+                .then((data: any[]) => {
+                    return data.map((userData: any) => {
+                        return new User(userData);
                     });
-            } else {
-                reject(new Error(Translation[Config.language].EMPTY_DATA));
-            }
-        });
-    },
+                });
+        },
 
-    findAll: (): Promise<User[]> => {
-        return DbClient.find(Config.database.collections.users);
-    },
+        getUser: (username: string): Promise<User> => {
+            return DbClient.findOne(Config.database.collections.users, {username: username})
+                .then((data: any) => {
+                    return new User(data);
+                });
+        },
 
-    findOneByUsername: (username: string): Promise<User> => {
-        return <Promise<User>>DbClient.findOne(Config.database.collections.users, {username: username})
-    },
+        updateUser: (username: string, update: string): Promise<User> => {
+            return DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, update)
+                .then((data: any) => {
+                    return new User(data);
+                });
+        },
 
-    findOneAndUpdateByUsername: (username: string, update: string): Promise<User> => {
-        return DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, update);
-    },
+        deleteUser: (username: string): Promise<void> => {
+            return DbClient.findOneAndDelete(Config.database.collections.users, {username: username})
+                .then(() => {
+                    UserServices.deletePassword(username)
+                        .then(() => {
+                            return UserServices.deleteToken(username);
+                        });
+                });
+        },
 
-    findOneAndDeleteByUsername: (username: string): Promise<any> => {
-        return DbClient.findOneAndDelete(Config.database.collections.users, {username: username})
-            .then(() => {
-                return DbClient.findOneAndDelete(Config.database.collections.tokens, {username: username})
-                    .then(() => {
-                        return DbClient.findOneAndDelete(Config.database.collections.passwords, {username: username});
-                    });
-            });
+        getPassword: (username: string): Promise<Password> => {
+            return DbClient.findOne(Config.database.collections.passwords, {username: username})
+                .then((data: any) => {
+                    return new Password(data);
+                });
+        },
+
+        deletePassword: (username: string): Promise<void> => {
+            return DbClient.findOneAndDelete(Config.database.collections.passwords, {username: username});
+        },
+
+        deleteToken: (username: string): Promise<void> => {
+            return DbClient.findOneAndDelete(Config.database.collections.tokens, {username: username});
+        }
     }
-};
+;

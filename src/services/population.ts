@@ -13,12 +13,9 @@ export const PopulationServices = {
         ];
         population.map(data => {
             let msg = 'PopulationService: '.blue.bold + data.username.yellow + ' ';
-            UserServices.insertOne(data)
-                .then((user: User) => {
-                    console.log(msg + 'added'.green);
-                }, (e: Error) => {
-                    console.log(msg + e.message.red);
-                });
+            UserServices.addUser(data)
+                .then((user: User) => console.log(msg + 'added'.green))
+                .catch((err: Error) => console.log(msg + err.message.red));
         });
     },
 

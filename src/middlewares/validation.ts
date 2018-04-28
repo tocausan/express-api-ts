@@ -11,8 +11,9 @@ export const ValidationMiddleware = {
     isRole: (role: number, req: Request, res: Response, next: NextFunction): void => {
         UserServices.isTokenValid(req.body.username, req.body.token)
             .then(() => {
-                UserServices.findOneByUsername(req.body.username)
+                UserServices.getUser(req.body.username)
                     .then((user: User) => {
+                        console.log(user)
                         if (user.hasAccessTo(role)) return ErrorController.errorHandler(new Error(Translation[Config.language].UNAUTHORIZED_ACCESS), req, res);
                         return next();
                     })

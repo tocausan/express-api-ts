@@ -23,5 +23,3 @@ export const AuthController = {
         return new User(null);
     }
 };
-
-

@@ -94,9 +94,9 @@ export class DbClient {
                 return client.db(Config.database.db)
                     .collection(collection)
                     .findOneAndUpdate(filter, {$set: update})
-                    .then((result: any) => {
+                    .then(() => {
                         client.close();
-                        return result;
+                        return update;
                     });
             });
     }

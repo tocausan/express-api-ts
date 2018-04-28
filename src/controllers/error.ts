@@ -30,6 +30,7 @@ export const ErrorController = {
     },
 
     errorHandler: (err: Error, req: express.Request, res: express.Response) => {
+        console.log(err);
         return res.status(500).json(err.message);
     }
 };
