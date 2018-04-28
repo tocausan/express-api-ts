@@ -65,6 +65,13 @@ export const UserServices = {
                 });
         },
 
+        getToken: (username: string): Promise<Token> => {
+            return DbClient.findOne(Config.database.collections.tokens, {username: username})
+                .then((data: any) => {
+                    return new Token(data);
+                });
+        },
+
         getPassword: (username: string): Promise<Password> => {
             return DbClient.findOne(Config.database.collections.passwords, {username: username})
                 .then((data: any) => {

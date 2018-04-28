@@ -2,17 +2,17 @@ import * as express from 'express';
 import {Config} from '../config';
 import {HeaderMiddleware, ValidationMiddleware} from '../middlewares';
 import {ErrorController, AuthController, UserController, ProfileController} from '../controllers';
-import {PopulationServices, UserServices} from "../services";
+import {PopulationServices} from "../services";
 
 const baseUrl = Config.api.path,
     memberUrl = baseUrl + '/member',
     managerUrl = baseUrl + '/manager',
     adminUrl = baseUrl + '/admin';
 
-PopulationServices.default();
+if (process.env.ENV === 'dev') PopulationServices.default();
 
 export const Routes = express.Router()
-    // BASE
+
     .all('/*', [HeaderMiddleware.enableCORS])
     .get('/', (req: express.Request, res: express.Response) => {
         return res.redirect(baseUrl + '/');
@@ -42,3 +42,4 @@ export const Routes = express.Router()
     // ERROR
     .use(ErrorController.error404)
     .use(ErrorController.errorHandler);
+

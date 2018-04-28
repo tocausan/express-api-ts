@@ -5,6 +5,7 @@ import {UserServices} from "./user";
 export const PopulationServices = {
 
     default: () => {
+        console.log('PopulationService, remove it from "route/index"'.white);
         const population = [
             {username: 'public', password: 'public', role: 0},
             {username: 'member', password: 'member', role: 1},

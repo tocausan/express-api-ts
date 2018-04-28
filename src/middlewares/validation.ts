@@ -13,16 +13,15 @@ export const ValidationMiddleware = {
             .then(() => {
                 UserServices.getUser(req.body.username)
                     .then((user: User) => {
-                        console.log(user)
-                        if (user.hasAccessTo(role)) return ErrorController.errorHandler(new Error(Translation[Config.language].UNAUTHORIZED_ACCESS), req, res);
+                        if (!user.hasAccessTo(role)) return next(new Error(Translation[Config.language].UNAUTHORIZED_ACCESS));
                         return next();
                     })
                     .catch((err: Error) => {
-                        return ErrorController.errorHandler(err, req, res);
+                        return next(err);
                     });
             })
             .catch((err: Error) => {
-                return ErrorController.errorHandler(err, req, res);
+                return next(err);
             });
     },
 

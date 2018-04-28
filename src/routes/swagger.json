@@ -5,7 +5,7 @@
     "title": "webpack-express-typescript-swagger-api"
   },
   "host": "localhost:3000",
-  "basePath": "/api/1",
+  "basePath": "/api/v1",
   "schemes": [
     "http"
   ],

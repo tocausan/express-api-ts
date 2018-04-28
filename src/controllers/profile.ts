@@ -1,33 +1,36 @@
-import * as express from "express";
+import {Request, Response, NextFunction} from "express";
 import {UserServices} from '../services';
-import {ErrorController} from './';
 
 export const ProfileController = {
 
-    getProfile: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        return UserServices.getUser(req.body.token.username)
-            .then(result => {
-                res.json(result);
-            }, () => {
-                return ErrorController.error500(req, res);
+    getProfile: async (req: Request, res: Response, next: NextFunction) => {
+        const user = await UserServices.getUser(req.body.username)
+            .catch((err: Error) => {
+                return next(err);
             });
+        const token = await UserServices.getToken(req.body.username)
+            .catch((err: Error) => {
+                return next(err);
+            });
+        return res.json({
+            user: user,
+            token: token
+        });
     },
 
-    updateProfile: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        return UserServices.updateUser(req.body.token.username, req.body.data)
-            .then(result => {
-                res.json(result);
-            }, () => {
-                return ErrorController.error500(req, res);
+    updateProfile: async (req: Request, res: Response, next: NextFunction) => {
+        const result = await UserServices.updateUser(req.body.token.username, req.body.data)
+            .catch((err: Error) => {
+                return next(err);
             });
+        return res.json(result);
     },
 
-    deleteProfile: (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        return UserServices.deleteUser(req.body.token.username)
-            .then(() => {
-                res.redirect('/');
-            }, () => {
-                return ErrorController.error500(req, res);
+    deleteProfile: async (req: Request, res: Response, next: NextFunction) => {
+        await UserServices.deleteUser(req.body.token.username)
+            .catch((err: Error) => {
+                return next(err);
             });
+        return res.redirect('/');
     }
 };

@@ -19,7 +19,7 @@ export const Config = {
     api: {
         port: process.env.PORT || 3000,
         version: 1,
-        path: '/api/1'
+        path: '/api/v1'
     },
     encryption: {
         binary: 'base64',

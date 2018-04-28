@@ -1,51 +1,55 @@
+import {Request, Response, NextFunction} from "express";
 import {UserServices} from '../services';
-import {ErrorController} from './';
-import * as express from "express";
 
 export const UserController = {
 
-    getUsers: (req: express.Request, res: express.Response) => {
+    getUsers: (req: Request, res: Response, next: NextFunction) => {
         return UserServices.getUsers()
             .then(result => {
                 return res.json(result)
-            }, (e: Error) => {
-                return ErrorController.errorHandler(e, req, res);
+            })
+            .catch((err: Error) => {
+                return next(err);
             });
     },
 
-    createUser: (req: express.Request, res: express.Response) => {
+    createUser: (req: Request, res: Response, next: NextFunction) => {
         return UserServices.addUser(req.body.data)
             .then(result => {
                 return res.json(result)
-            }, (e: Error) => {
-                return ErrorController.errorHandler(e, req, res);
+            })
+            .catch((err: Error) => {
+                return next(err);
             });
     },
 
-    updateUser: (req: express.Request, res: express.Response) => {
+    updateUser: (req: Request, res: Response, next: NextFunction) => {
         return UserServices.updateUser(req.body.user.username, req.body.data)
             .then(result => {
                 return res.json(result)
-            }, (e: Error) => {
-                return ErrorController.errorHandler(e, req, res);
+            })
+            .catch((err: Error) => {
+                return next(err);
             });
     },
 
-    getUser: (req: express.Request, res: express.Response) => {
+    getUser: (req: Request, res: Response, next: NextFunction) => {
         return UserServices.getUser(req.body.user.username)
             .then(result => {
                 return res.json(result)
-            }, (e: Error) => {
-                return ErrorController.errorHandler(e, req, res);
+            })
+            .catch((err: Error) => {
+                return next(err);
             });
     },
 
-    deleteUser: (req: express.Request, res: express.Response) => {
+    deleteUser: (req: Request, res: Response, next: NextFunction) => {
         return UserServices.deleteUser(req.body.user.username)
             .then(result => {
                 return res.json(result)
-            }, (e: Error) => {
-                return ErrorController.errorHandler(e, req, res);
+            })
+            .catch((err: Error) => {
+                return next(err);
             });
     },
 };
