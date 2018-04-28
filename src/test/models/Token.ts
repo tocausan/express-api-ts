@@ -7,15 +7,31 @@ import {EncryptionServices} from "../../services";
 describe('Token', () => {
 
     describe('new Token()', () => {
-        it('should return a default object', () => {
-            const token = new Token();
+        const token = new Token();
+        it('should return an object with [username, creation, expiration, hash]', () => {
             expect(token)
                 .to.be.a('object')
                 .to.have.all.keys(['username', 'hash', 'creation', 'expiration'])
-            expect(token.username).to.be.equal('');
-            expect(token.creation).to.be.equal(moment.utc().format());
-            expect(token.expiration).to.be.equal(moment.utc().add(Config.token.expiration, 'days').format());
-            expect(token.hash).to.be.equal(EncryptionServices.hash(token.username + token.creation + token.expiration, Config.encryption.iterations));
+        });
+        it('username should return an empty string', () => {
+            expect(token.username)
+                .to.be.a('string')
+                .to.be.equal('');
+        });
+        it('creation should return a string date equal to utc now', () => {
+            expect(token.creation)
+                .to.be.a('string')
+                .to.be.equal(moment.utc().format());
+        });
+        it('expiration should return a string date equal to utc now plus expiration day count', () => {
+            expect(token.expiration)
+                .to.be.a('string')
+                .to.be.equal(moment.utc().add(Config.token.expiration, 'days').format());
+        });
+        it('hash should return an hashed string', () => {
+            expect(token.hash)
+                .to.be.a('string')
+                .to.be.equal(EncryptionServices.hash(token.username + token.creation + token.expiration, Config.encryption.iterations));
         });
     });
 
@@ -23,17 +39,27 @@ describe('Token', () => {
         it('should return a custom object', () => {
             const token = new Token({
                 username: 'username',
-                token: 'token',
                 creation: 'creation',
-                expiration: 'expiration'
+                expiration: 'expiration',
+                hash: 'hash'
             });
-            expect(token)
-                .to.be.a('object')
-                .to.have.all.keys(['username', 'hash', 'creation', 'expiration'])
-            expect(token.username).to.be.equal('username');
-            expect(token.hash).to.be.equal('token');
-            expect(token.creation).to.be.equal('creation');
-            expect(token.expiration).to.be.equal('expiration');
+            it('should return an object with [username, creation, expiration, hash]', () => {
+                expect(token)
+                    .to.be.a('object')
+                    .to.have.all.keys(['username', 'hash', 'creation', 'expiration'])
+            });
+            it('username should return a string equal to "username"', () => {
+                expect(token.username).to.be.equal('username');
+            });
+            it('hash should return a string equal to "hash"', () => {
+                expect(token.hash).to.be.equal('hash');
+            });
+            it('creation should return a string equal to "creation"', () => {
+                expect(token.creation).to.be.equal('creation');
+            });
+            it('expiration should return a string equal to "expiration"', () => {
+                expect(token.expiration).to.be.equal('expiration');
+            });
         });
     });
 
