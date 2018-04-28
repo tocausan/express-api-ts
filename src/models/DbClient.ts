@@ -39,12 +39,13 @@ export class DbClient {
     static async insertOne(collection: string, data: any): Promise<any> {
         return this.connect()
             .then((client: any) => {
-                client.db(Config.database.db)
+                return client.db(Config.database.db)
                     .collection(collection)
-                    .insertOne(data).then((result: any) => {
-                    client.close();
-                    return result;
-                });
+                    .insertOne(data)
+                    .then(() => {
+                        client.close();
+                        return data;
+                    });
             });
     }
 
@@ -70,11 +71,7 @@ export class DbClient {
                 return client.db(Config.database.db)
                     .collection(collection)
                     .find()
-                    .toArray((err: Error, result: any) => {
-                        if (err) throw err;
-                        client.close();
-                        return result;
-                    });
+                    .toArray();
             });
     }
 
@@ -94,7 +91,7 @@ export class DbClient {
     static async findOneAndUpdate(collection: string, filter: any, update: any): Promise<any> {
         return this.connect()
             .then((client: any) => {
-                client.db(Config.database.db)
+                return client.db(Config.database.db)
                     .collection(collection)
                     .findOneAndUpdate(filter, {$set: update})
                     .then((result: any) => {
@@ -107,7 +104,7 @@ export class DbClient {
     static async findOneAndUpdateOrInsert(collection: string, filter: any, update: any): Promise<any> {
         return this.connect()
             .then(() => {
-                this.findOne(collection, filter)
+                return this.findOne(collection, filter)
                     .then(async (result: any) => {
                         if (result) return this.findOneAndUpdate(collection, filter, update);
                         else return this.insertOne(collection, update);
