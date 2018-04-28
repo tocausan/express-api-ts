@@ -4,67 +4,98 @@ import {Password} from "../../models";
 describe('Password', () => {
 
     describe('new Password()', () => {
-        it('should return an object', () => {
+        it('should return an object with [username, iterations, salt, hash]', () => {
             expect(new Password())
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
+                .to.have.all.keys(['iterations', 'salt', 'username', 'hash']);
         });
     });
 
     describe('new Password()', () => {
-        it('should return an object', () => {
-            const password = new Password();
+        const password = new Password();
+        it('should return an object with [username, iterations, salt, hash]', () => {
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
+                .to.have.all.keys(['username', 'iterations', 'salt', 'hash']);
+        });
+        it('username should return a string not empty', () => {
+            expect(password.username).to.be.a('string')
+                .to.be.equal('');
+        });
+        it('iterations should return a number', () => {
             expect(password.iterations).to.be.a('number');
+        });
+        it('salt should return a string', () => {
             expect(password.salt).to.be.a('string');
-            expect(password.username).to.be.a('string').to.be.equal('');
+        });
+        it('hash should return a string', () => {
             expect(password.hash).to.be.a('string');
         });
     });
 
     describe('new Password(data)', () => {
-        it('should return an object', () => {
-            const password = new Password({
-                iterations: 1,
-                salt: 'salt',
-                username: 'username',
-                password: 'password',
-                hash: 'hash'
-            });
+        const password = new Password({
+            iterations: 1,
+            salt: 'salt',
+            username: 'username',
+            password: 'password',
+            hash: 'hash'
+        });
+        it('should return an object with [username, iterations, salt, hash]', () => {
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'hash'])
-            expect(password.iterations).to.be.a('number').to.be.equal(1);
-            expect(password.salt).to.be.a('string').to.be.equal('salt');
-            expect(password.username).to.be.a('string').to.be.equal('username');
-            expect(password.hash).to.be.a('string').to.be.equal('hash');
+                .to.have.all.keys(['username', 'iterations', 'salt', 'hash']);
+        });
+        it('username should return a string equal to "username"', () => {
+            expect(password.username).to.be.a('string')
+                .to.be.equal('username');
+        });
+        it('iterations should return a number equal to 1', () => {
+            expect(password.iterations).to.be.a('number')
+                .to.be.equal(1);
+        });
+        it('salt should return a string equal to "salt"', () => {
+            expect(password.salt).to.be.a('string')
+                .to.be.equal('salt');
+        });
+        it('hash should return a string equal to "hash"', () => {
+            expect(password.hash).to.be.a('string')
+                .to.be.equal('hash');
         });
     });
 
     describe('new Password(data) comparePassword', () => {
-        it('should return a boolean', () => {
-
-            let password = new Password({
-                password: 'password'
-            });
-            password.comparePassword('password').then(result => {
-                expect(result)
-                    .to.be.a('boolean')
-                    .to.be.equal(true)
-            }).catch(err => {
-                console.log(err);
-            });
-
-            password.comparePassword('').then(result => {
-                expect(result)
-                    .to.be.a('boolean')
-                    .to.be.equal(false)
-            }).catch(err => {
-                console.log(err);
-            });
+        const password = new Password({
+            password: 'password'
+        });
+        let trueResult: any,
+            falseResult: any;
+        before((done) => {
+            password.comparePassword('password')
+                .then((res: any) => {
+                    trueResult = res;
+                    password.comparePassword('')
+                        .then((res: any) => {
+                            falseResult = res;
+                            done();
+                        })
+                        .catch((e: Error) => {
+                            console.log(e);
+                        });
+                })
+                .catch((e: Error) => {
+                    console.log(e);
+                });
+        });
+        it('compare with right password should return a boolean equal to true', () => {
+            expect(trueResult)
+                .to.be.a('boolean')
+                .to.be.equal(true);
+        });
+        it('compare with wrong password should return a boolean equal to false', () => {
+            expect(falseResult)
+                .to.be.a('boolean')
+                .to.be.equal(false);
         });
     });
-
 });
