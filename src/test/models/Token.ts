@@ -62,24 +62,4 @@ describe('Token', () => {
             });
         });
     });
-
-    describe('isValid', () => {
-        const currentToken = new Token(),
-            previousToken = new Token({
-                creation: moment.utc().add(-Math.abs(Config.token.expiration), 'days').format()
-            }),
-            futureToken = new Token({
-                creation: moment.utc().add(Math.abs(Config.token.expiration) - 1, 'days').format()
-            });
-        it('current token should return true', () => {
-            expect(currentToken.isValid()).to.be.equal(true);
-        });
-        it('previous token should return false', () => {
-            expect(previousToken.isValid()).to.be.equal(false);
-        });
-        it('future token should return false', () => {
-            expect(futureToken.isValid()).to.be.equal(false);
-        });
-    });
-
 });

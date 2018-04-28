@@ -3,18 +3,26 @@ import {Config} from '../config';
 import {UserRoleEnums} from "../enums";
 import {Translation} from "../translations";
 import {UserServices} from "../services";
-import {Token, User} from "../models";
+import {ErrorController} from "../controllers";
+import {User} from "../models";
 
 export const ValidationMiddleware = {
 
-    isRole: (role: number, req: Request, res: Response, next: NextFunction) => {
-        const token = new Token(req.body.token);
-        UserServices.isTokenValid(token).then((user: User) => {
-            if (!user || user.role < role) return res.json(new Error(Translation[Config.language].UNAUTHORIZED_ACCESS));
-            return next();
-        }, (e: Error) => {
-            return res.json(e);
-        });
+    isRole: (role: number, req: Request, res: Response, next: NextFunction): void => {
+        UserServices.isTokenValid(req.body.username, req.body.token)
+            .then(() => {
+                UserServices.findOneByUsername(req.body.username)
+                    .then((user: User) => {
+                        if (user.hasAccessTo(role)) return ErrorController.errorHandler(new Error(Translation[Config.language].UNAUTHORIZED_ACCESS), req, res);
+                        return next();
+                    })
+                    .catch((err: Error) => {
+                        return ErrorController.errorHandler(err, req, res);
+                    });
+            })
+            .catch((err: Error) => {
+                return ErrorController.errorHandler(err, req, res);
+            });
     },
 
     isPublic: (req: Request, res: Response, next: NextFunction) => {

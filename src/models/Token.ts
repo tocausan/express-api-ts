@@ -19,9 +19,4 @@ export class Token {
         this.hash = !_.isNil(data) && !_.isNil(data.hash) ?
             data.hash : EncryptionServices.hash(this.username + this.creation + this.expiration, Config.encryption.iterations);
     }
-
-    public isValid(): boolean {
-        const now = moment.utc().format();
-        return !_.isNil(this.username) && now >= this.creation && now < this.expiration;
-    }
 }

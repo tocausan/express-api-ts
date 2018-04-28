@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {Config} from '../config';
 import {User, Password, Token, DbClient} from '../models';
 import {Translation} from "../translations";
@@ -5,9 +6,16 @@ import {EncryptionServices} from "./encryption";
 
 export const UserServices = {
 
-    isTokenValid: async (token: Token): Promise<User> => {
-        if (token.isValid()) throw Translation[Config.language].INVALID_TOKEN;
-        return UserServices.findOneByUsername(token.username);
+    isTokenValid: async (username: string, token: Token): Promise<void> => {
+        return DbClient.findOne(Config.database.collections.tokens, {username: username})
+            .then((userToken: Token) => {
+                const now = moment.utc().format();
+                if (userToken &&
+                    userToken === token &&
+                    userToken.expiration < now &&
+                    userToken.creation >= now) return;
+                else throw new Error(Translation[Config.language].INVALID_TOKEN);
+            });
     },
 
     insertOne: (data: any): Promise<User> => {

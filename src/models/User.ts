@@ -14,22 +14,26 @@ export class User {
         this.role = !_.isNil(data) && !_.isNil(data.role) ? data.role : UserRoleEnums.PUBLIC;
     }
 
-    toPublic() {
+    hasAccessTo(role: number): boolean {
+        return this.role >= role;
+    }
+
+    toPublic(): User {
         this.role = UserRoleEnums.PUBLIC;
         return this;
     }
 
-    toMember() {
+    toMember(): User {
         this.role = UserRoleEnums.MEMBER;
         return this;
     }
 
-    toManager() {
+    toManager(): User {
         this.role = UserRoleEnums.MANAGER;
         return this;
     }
 
-    toAdmin() {
+    toAdmin(): User {
         this.role = UserRoleEnums.ADMIN;
         return this;
     }
