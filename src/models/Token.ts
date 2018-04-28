@@ -5,7 +5,7 @@ import {EncryptionServices} from "../services";
 
 export class Token {
     username: string;
-    token: string;
+    hash: string;
     creation: string;
     expiration: string;
 
@@ -16,8 +16,8 @@ export class Token {
             data.creation : moment.utc().format();
         this.expiration = !_.isNil(data) && !_.isNil(data.expiration) ?
             data.expiration : moment.utc(this.creation).add(Config.token.expiration, 'days').format();
-        this.token = !_.isNil(data) && !_.isNil(data.token) ?
-            data.token : EncryptionServices.hash(this.username + this.creation + this.expiration, Config.encryption.iterations);
+        this.hash = !_.isNil(data) && !_.isNil(data.hash) ?
+            data.hash : EncryptionServices.hash(this.username + this.creation + this.expiration, Config.encryption.iterations);
     }
 
     public isValid(): boolean {

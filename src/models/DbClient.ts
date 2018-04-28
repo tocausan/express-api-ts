@@ -10,7 +10,6 @@ export class DbClient {
                 return resolve(client);
             });
         });
-
     }
 
     static async isConnected(): Promise<boolean> {
@@ -21,7 +20,7 @@ export class DbClient {
             })
             .catch(() => {
                 return false;
-            })
+            });
     }
 
     static async insertMany(collection: string, data: any[]): Promise<any[]> {
@@ -34,7 +33,7 @@ export class DbClient {
                         client.close();
                         return data;
                     });
-            })
+            });
     }
 
     static async insertOne(collection: string, data: any): Promise<any> {
@@ -122,6 +121,6 @@ export class DbClient {
                 return client.db(Config.database.db)
                     .collection(collection)
                     .findOneAndDelete(filter);
-            })
+            });
     }
 }

@@ -12,11 +12,12 @@ export const PopulationServices = {
             {username: 'admin', password: 'admin', role: 3}
         ];
         population.map(data => {
+            let msg = 'PopulationService: '.blue.bold + data.username.yellow + ' ';
             UserServices.insertOne(data)
                 .then((user: User) => {
-                    console.log('PopulationService: '.yellow.bold + user.username + '    added'.green);
+                    console.log(msg + 'added'.green);
                 }, (e: Error) => {
-                    console.log('PopulationService: '.yellow.bold + data.username.blue + '  ' + e.message.red);
+                    console.log(msg + e.message.red);
                 });
         });
     },

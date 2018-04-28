@@ -5,119 +5,129 @@ import {LanguageEnums, UserRoleEnums} from "../../enums";
 describe('User', () => {
 
     describe('new User()', () => {
-        it('should return a default user', () => {
-            const user = new User();
+        const user = new User();
+        it('should return an object with [username, language, role, email]', () => {
             expect(user)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'picture', 'firstname', 'lastname', 'birthday', 'address', 'language', 'role', 'token'])
+                .to.have.all.keys(['username', 'language', 'role', 'email']);
+        });
+        it('email should return ""', () => {
+            expect(user.email).to.be.equal('');
+        });
+        it('username should return ""', () => {
             expect(user.username).to.be.equal('');
-            expect(user.firstname).to.be.equal('');
-            expect(user.lastname).to.be.equal('');
-            expect(user.picture).to.be.equal('');
-            expect(user.birthday).to.be.equal('');
-            expect(user.address).to.be.equal('');
+        });
+        it('language should return default english"', () => {
             expect(user.language).to.be.equal(LanguageEnums.EN_US);
-            expect(user.token).to.be.equal('');
+        });
+        it('role should return default public"', () => {
             expect(user.role).to.be.equal(UserRoleEnums.PUBLIC);
         });
     });
 
     describe('new User(data)', () => {
-        it('should return a custom user', () => {
-            const user = new User({
-                username: 'username',
-                firstname: 'firstname',
-                lastname: 'lastname',
-                picture: 'picture',
-                birthday: 'birthday',
-                address: 'address',
-                language: LanguageEnums.EN_US,
-                token: 'token',
-                role: 0
-            });
+        const user = new User({
+            username: 'username',
+            email: 'email',
+            language: LanguageEnums.EN_US,
+            token: 'token',
+            role: 0
+        });
+        it('should return an object with [username, language, role, email]', () => {
             expect(user)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'picture', 'firstname', 'lastname', 'birthday', 'address', 'language', 'role', 'token'])
+                .to.have.all.keys(['username', 'language', 'role', 'email']);
+        });
+        it('username should return "username"', () => {
             expect(user.username).to.be.equal('username');
-            expect(user.firstname).to.be.equal('firstname');
-            expect(user.lastname).to.be.equal('lastname');
-            expect(user.picture).to.be.equal('picture');
-            expect(user.birthday).to.be.equal('birthday');
-            expect(user.address).to.be.equal('address');
+        });
+        it('email should return "email"', () => {
+            expect(user.email).to.be.equal('email');
+        });
+        it('language should return dafault english', () => {
             expect(user.language).to.be.equal(LanguageEnums.EN_US);
-            expect(user.token).to.be.equal('token');
+        });
+        it('role should return default public', () => {
             expect(user.role).to.be.equal(UserRoleEnums.PUBLIC);
         });
     });
 
     describe('new User(public)', () => {
-        it('should return a public user', () => {
-            const user = new User({
-                username: 'public',
-                role: UserRoleEnums.PUBLIC
-            });
+        const user = new User({
+            username: 'public',
+            role: UserRoleEnums.PUBLIC
+        });
+        it('username should return "public"', () => {
             expect(user.username).to.be.equal('public');
+        });
+        it('role should return public role', () => {
             expect(user.role).to.be.equal(UserRoleEnums.PUBLIC);
         });
     });
 
     describe('new User(member)', () => {
-        it('should return a member user', () => {
-            const user = new User({
-                username: 'member',
-                role: UserRoleEnums.MEMBER
-            });
+        const user = new User({
+            username: 'member',
+            role: UserRoleEnums.MEMBER
+        });
+        it('member should return "member"', () => {
             expect(user.username).to.be.equal('member');
+        });
+        it('role should return member role', () => {
             expect(user.role).to.be.equal(UserRoleEnums.MEMBER)
         });
     });
 
     describe('new User(manager)', () => {
-        it('should return a manager user', () => {
-            const user = new User({
-                username: 'manager',
-                role: UserRoleEnums.MANAGER
-            });
+        const user = new User({
+            username: 'manager',
+            role: UserRoleEnums.MANAGER
+        });
+        it('manager should return "manager"', () => {
             expect(user.username).to.be.equal('manager');
+        });
+        it('role should return manager role', () => {
             expect(user.role).to.be.equal(UserRoleEnums.MANAGER)
         });
     });
 
     describe('new User(admin)', () => {
-        it('should return an admin user', () => {
-            const user = new User({
-                username: 'admin',
-                role: UserRoleEnums.ADMIN
-            });
+        const user = new User({
+            username: 'admin',
+            role: UserRoleEnums.ADMIN
+        });
+        it('admin should return "admin"', () => {
             expect(user.username).to.be.equal('admin');
+        });
+        it('role should return admin role', () => {
             expect(user.role).to.be.equal(UserRoleEnums.ADMIN)
         });
     });
 
     describe('new User() toPublic', () => {
-        it('should return a public user', () => {
-            const user = new User().toPublic();
+        const user = new User().toPublic();
+        it('role should return a public user', () => {
             expect(user.role).to.be.equal(UserRoleEnums.PUBLIC)
         });
     });
 
     describe('new User() toMember', () => {
-        it('should return a member user', () => {
-            const user = new User().toMember();
+        const user = new User().toMember();
+        it('role should return a member user', () => {
             expect(user.role).to.be.equal(UserRoleEnums.MEMBER)
         });
     });
 
     describe('new User() toManager', () => {
-        it('should return a manager user', () => {
-            const user = new User().toManager();
+        const user = new User().toManager();
+        it('role should return a manager user', () => {
             expect(user.role).to.be.equal(UserRoleEnums.MANAGER)
         });
     });
 
     describe('new User() toAdmin', () => {
-        it('should return an admin user', () => {
-            const user = new User().toAdmin();
+        const user = new User().toAdmin();
+        it('role should return an admin user', () => {
             expect(user.role).to.be.equal(UserRoleEnums.ADMIN)
         });
     });

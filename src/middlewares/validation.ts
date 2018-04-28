@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {UserRoleEnums} from "../enums";
 import {Translation} from "../translations";
 import {UserServices} from "../services";
-import {ErrorApi, Token, User} from "../models";
+import {Token, User} from "../models";
 
 export const ValidationMiddleware = {
 

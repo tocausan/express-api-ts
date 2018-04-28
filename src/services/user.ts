@@ -5,17 +5,9 @@ import {EncryptionServices} from "./encryption";
 
 export const UserServices = {
 
-    isTokenValid: (token: Token): Promise<User> => {
-        return new Promise((resolve, reject) => {
-            if (token.isValid()) return reject({message: Translation[Config.language].INVALID_TOKEN});
-            UserServices.findOneByUsername(token.username)
-                .then((user: User) => {
-                    if (user.token !== token.token) return reject({message: Translation[Config.language].INVALID_TOKEN});
-                    return resolve(user);
-                }, (e: Error) => {
-                    return reject(e);
-                });
-        });
+    isTokenValid: async (token: Token): Promise<User> => {
+        if (token.isValid()) throw Translation[Config.language].INVALID_TOKEN;
+        return UserServices.findOneByUsername(token.username);
     },
 
     insertOne: (data: any): Promise<User> => {
