@@ -7,7 +7,7 @@ import {Translation} from "../translations";
 export const UserServices = {
 
         isTokenValid: async (username: string, token: string): Promise<boolean> => {
-            const userToken: Token = await DbClient.findOne(Config.database.collections.tokens, {username: username});
+            const userToken: Token = await UserServices.getToken(username);
             const now = moment.utc().format();
             if (userToken &&
                 userToken.hash === token &&
@@ -49,18 +49,12 @@ export const UserServices = {
 
         getToken: async (username: string): Promise<Token> => {
             const user: User = await UserServices.getUser(username);
-            return DbClient.findOne(Config.database.collections.tokens, {userId: user.id})
-                .then((data: any) => {
-                    return new Token(data);
-                });
+            return new Token(await DbClient.findOne(Config.database.collections.tokens, {userId: user.id}));
         },
 
         getPassword: async (username: string): Promise<Password> => {
             const user: User = await UserServices.getUser(username);
-            return DbClient.findOne(Config.database.collections.passwords, {userId: user.id})
-                .then((data: any) => {
-                    return new Password(data);
-                });
+            return new Password(await DbClient.findOne(Config.database.collections.passwords, {userId: user.id}));
         },
 
         deletePassword: async (username: string): Promise<void> => {

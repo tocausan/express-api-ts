@@ -24,8 +24,12 @@ export class Password {
         return EncryptionServices.hash(toHash, this.iterations);
     }
 
-    public async comparePassword(password: string): Promise<boolean> {
+    public comparePassword(password: string): boolean {
         return this.generateHash(password) === this.hash
+    }
+
+    static difficultyPassword(password: string): boolean {
+        return password.length >= 6;
     }
 
     static confirmPassword(password: string, passwordConfirmation: string): boolean {

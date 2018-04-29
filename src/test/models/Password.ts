@@ -68,32 +68,13 @@ describe('Password', () => {
         const password = new Password({
             password: 'password'
         });
-        let trueResult: any,
-            falseResult: any;
-        before((done) => {
-            password.comparePassword('password')
-                .then((res: any) => {
-                    trueResult = res;
-                    password.comparePassword('')
-                        .then((res: any) => {
-                            falseResult = res;
-                            done();
-                        })
-                        .catch((e: Error) => {
-                            console.log(e);
-                        });
-                })
-                .catch((e: Error) => {
-                    console.log(e);
-                });
-        });
         it('compare with right password should return a boolean equal to true', () => {
-            expect(trueResult)
+            expect(password.comparePassword('password'))
                 .to.be.a('boolean')
                 .to.be.equal(true);
         });
         it('compare with wrong password should return a boolean equal to false', () => {
-            expect(falseResult)
+            expect(password.comparePassword(''))
                 .to.be.a('boolean')
                 .to.be.equal(false);
         });

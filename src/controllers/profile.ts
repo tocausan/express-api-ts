@@ -1,36 +1,33 @@
 import {Request, Response, NextFunction} from "express";
-import {UserServices} from '../services';
+import {AuthServices, UserServices} from '../services';
 
 export const ProfileController = {
 
     getProfile: async (req: Request, res: Response, next: NextFunction) => {
-        const user = await UserServices.getUser(req.body.username)
-            .catch((err: Error) => {
-                return next(err);
+        try {
+            return res.json({
+                user: await UserServices.getUser(req.body.username),
+                token: await UserServices.getToken(req.body.username)
             });
-        const token = await UserServices.getToken(req.body.username)
-            .catch((err: Error) => {
-                return next(err);
-            });
-        return res.json({
-            user: user,
-            token: token
-        });
+        } catch (err) {
+            return next(err);
+        }
     },
 
     updateProfile: async (req: Request, res: Response, next: NextFunction) => {
-        const result = await UserServices.updateUser(req.body.token.username, req.body.data)
-            .catch((err: Error) => {
-                return next(err);
-            });
-        return res.json(result);
+        try {
+            return res.json(await UserServices.updateUser(req.body.token.username, req.body.data));
+        } catch (err) {
+            return next(err);
+        }
     },
 
     deleteProfile: async (req: Request, res: Response, next: NextFunction) => {
-        await UserServices.deleteUser(req.body.token.username)
-            .catch((err: Error) => {
-                return next(err);
-            });
-        return res.redirect('/');
+        try {
+            await UserServices.deleteUser(req.body.token.username)
+            return res.redirect('/');
+        } catch (err) {
+            return next(err);
+        }
     }
 };
