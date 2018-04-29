@@ -13,7 +13,7 @@ const baseUrl = Config.api.path,
 if (process.env.ENV === 'dev') PopulationServices.default();
 
 export const Routes = express.Router()
-    .use('/', Swagger)
+    //.use('/', Swagger)
 
     .all('/*', [HeaderMiddleware.enableCORS])
     .get('/', (req: express.Request, res: express.Response) => {
