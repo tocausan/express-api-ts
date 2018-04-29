@@ -8,7 +8,6 @@ import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 import {Config} from './config';
 import {Routes} from './routes';
-import {Swagger} from "./routes/swagger";
 
 const port = normalizePort(Config.api.port);
 
@@ -18,7 +17,6 @@ const App = express()
     .use(bodyParser.urlencoded({extended: false}))
     .use(cookieParser())
     .set('port', port)
-    .use('/', Swagger)
     .use('/', Routes)
     .use(helmet())
     .disable('x-powered-by');

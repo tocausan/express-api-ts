@@ -44,7 +44,7 @@ export const UserServices = {
 
         updateUser: async (username: string, update: any): Promise<User> => {
             const user: User = await UserServices.getUser(username);
-            return new User(await (DbClient.findOneAndUpdate(Config.database.collections.users, {_id: user.id}, update)))
+            return await (DbClient.findOneAndUpdate(Config.database.collections.users, {_id: user.id}, update));
         },
 
         deleteUser: async (username: string): Promise<void> => {

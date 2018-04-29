@@ -1,13 +1,17 @@
-import * as express from "express";
+import {Router} from "express";
 
 const swaggerUi = require('swagger-ui-express'),
-    swaggerDocument = require("./swagger.json"),
-    swaggerJSDoc = require('swagger-jsdoc');
+    swaggerDocument = require("./swagger.json");
 
-export const Swagger = express.Router()
-    .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+const Swagger = Router();
 
-    .get('/swagger.json', (req, res) => {
+if (process.env.ENV === 'dev') {
+    Swagger.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+    Swagger.get('/swagger.json', (req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(swaggerDocument, null, 2));
     });
+}
+
+export default Swagger;

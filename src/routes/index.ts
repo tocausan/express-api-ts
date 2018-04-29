@@ -3,6 +3,7 @@ import {Config} from '../config';
 import {HeaderMiddleware, ValidationMiddleware} from '../middlewares';
 import {ErrorController, AuthController, UserController, ProfileController} from '../controllers';
 import {PopulationServices} from "../services";
+import Swagger from "./swagger";
 
 const baseUrl = Config.api.path,
     memberUrl = baseUrl + '/member',
@@ -12,6 +13,7 @@ const baseUrl = Config.api.path,
 if (process.env.ENV === 'dev') PopulationServices.default();
 
 export const Routes = express.Router()
+    .use('/', Swagger)
 
     .all('/*', [HeaderMiddleware.enableCORS])
     .get('/', (req: express.Request, res: express.Response) => {
