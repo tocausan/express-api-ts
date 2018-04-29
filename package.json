@@ -22,7 +22,7 @@
   "homepage": "https://github.com/tocausan/express-api-ts#readme",
   "scripts": {
     "start": "node dist/bundle.js",
-    "test": "mocha -r ts-node/register src/test/index.ts",
+    "test": "mocha -r ts-node/register src/test/index.ts --exit",
     "watch:test": "mocha -r ts-node/register src/test/index.ts --watch",
     "build": "node node_modules/webpack/bin/webpack.js --config webpack.config.js",
     "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",

@@ -37,7 +37,9 @@ export const UserServices = {
         },
 
         getUser: async (username: string): Promise<User> => {
-            return new User((await DbClient.findOne(Config.database.collections.users, {username: username})));
+            const result = await DbClient.findOne(Config.database.collections.users, {username: username});
+            if (_.isNil(result)) throw new Error('user not found');
+            return new User(result);
         },
 
         updateUser: async (username: string, update: any): Promise<User> => {
@@ -47,9 +49,9 @@ export const UserServices = {
 
         deleteUser: async (username: string): Promise<void> => {
             try {
-                await DbClient.findOneAndDelete(Config.database.collections.users, {username: username})
                 await UserServices.deletePassword(username);
                 await UserServices.deleteToken(username);
+                await DbClient.findOneAndDelete(Config.database.collections.users, {username: username});
             } catch (err) {
                 throw err;
             }
@@ -61,7 +63,7 @@ export const UserServices = {
                 userId: user.id,
                 password: password
             });
-            return await DbClient.insertOneIfNotExist(Config.database.collections.passwords, {userId: user.id}, psswrd);
+            return await DbClient.findOneAndUpdateOrInsert(Config.database.collections.passwords, {userId: user.id}, psswrd);
         },
 
         getPassword: async (username: string): Promise<Password> => {

@@ -5,7 +5,7 @@ export class User {
     public id: string;
     public username: string;
     public email: string;
-    public language: string;
+    public language: number;
     public role: number;
 
     constructor(data?: any) {

@@ -5,7 +5,7 @@ let authTestUser = {
     username: 'authTestUser',
     password: 'authTestUser',
     passwordConfirmation: 'authTestUser',
-    role: '3'
+    role: 3
 };
 
 before(done => {
@@ -21,6 +21,10 @@ describe('auth', () => {
                 .then(res => {
                     result = res;
                     done();
+                })
+                .catch(err => {
+                    console.log(err);
+                    done();
                 });
         });
 
@@ -30,7 +34,11 @@ describe('auth', () => {
     });
 });
 
-after(after => {
+after(done => {
     UserServices.deleteUser(authTestUser.username)
-        .then(() => after());
+        .then(() => done())
+        .catch(err => {
+            console.log(err);
+            done();
+        });
 });
