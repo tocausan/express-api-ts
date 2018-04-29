@@ -9,7 +9,8 @@ export const ErrorController = {
     },
 
     errorHandler: (err: Error, req: Request, res: Response, next: NextFunction) => {
+        res.status(500);
         if (process.env.ENV === 'dev') return res.json([err.message, err.stack]);
-        return res.status(500).json(err.message);
+        return res.json(err.message);
     }
 };

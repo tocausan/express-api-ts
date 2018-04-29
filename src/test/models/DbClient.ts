@@ -8,7 +8,7 @@ describe('DbClient', () => {
 
     describe('isConnected', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.isConnected()
                 .then((res: any) => {
                     result = res;
@@ -18,6 +18,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return a boolean and true', () => {
             expect(result).to.be.a('boolean').to.equal(true);
         });
@@ -26,7 +27,7 @@ describe('DbClient', () => {
 
     describe('insertMany', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.insertMany(Config.database.collections.test, [{test: 'insertMany', date: moment().format()}])
                 .then((res: any) => {
                     result = res;
@@ -36,6 +37,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an array', () => {
             expect(result).to.be.a('array');
         });
@@ -43,7 +45,7 @@ describe('DbClient', () => {
 
     describe('insertOne', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.insertOne(Config.database.collections.test, {test: 'insertOne', date: moment().format()})
                 .then((res: any) => {
                     result = res;
@@ -53,6 +55,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object');
         });
@@ -60,7 +63,7 @@ describe('DbClient', () => {
 
     describe('insertOneIfNotExist', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             let test = {test: 'insertOneIfNotExist', date: moment().format()};
             DbClient.insertOneIfNotExist(Config.database.collections.test, test, test)
                 .then((res: any) => {
@@ -71,6 +74,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object');
         });
@@ -78,7 +82,7 @@ describe('DbClient', () => {
 
     describe('find', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.find(Config.database.collections.test)
                 .then((res: any) => {
                     result = res;
@@ -88,6 +92,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an array', () => {
             expect(result).to.be.a('array');
         });
@@ -95,7 +100,7 @@ describe('DbClient', () => {
 
     describe('findOne', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.findOne(Config.database.collections.test, {test: 'insertOne'})
                 .then((res: any) => {
                     result = res;
@@ -105,6 +110,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object')
         });
@@ -112,7 +118,7 @@ describe('DbClient', () => {
 
     describe('findOneAndUpdate', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.findOneAndUpdate(Config.database.collections.test, {test: 'insertOne'}, {test: 'findOneUpdate insertOne'})
                 .then((res: any) => {
                     result = res;
@@ -122,6 +128,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object');
         });
@@ -129,7 +136,7 @@ describe('DbClient', () => {
 
     describe('findOneAndUpdateOrInsert', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.findOneAndUpdateOrInsert(Config.database.collections.test, {test: 'insertOne'}, {test: 'findOneAndUpdateOrInsert insertOne'})
                 .then((res: any) => {
                     result = res;
@@ -139,6 +146,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object');
         });
@@ -146,7 +154,7 @@ describe('DbClient', () => {
 
     describe('findOneAndDelete', () => {
         let result: any;
-        before((done) => {
+        before(done => {
             DbClient.findOneAndDelete(Config.database.collections.test, {test: 'insertMany'})
                 .then((res: any) => {
                     result = res;
@@ -156,6 +164,7 @@ describe('DbClient', () => {
                     console.log(e);
                 });
         });
+
         it('should return an object', () => {
             expect(result).to.be.a('object');
         });

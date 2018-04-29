@@ -16,7 +16,7 @@ export const ProfileController = {
 
     updateProfile: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            return res.json(await UserServices.updateUser(req.body.token.username, req.body.data));
+            return res.json(await UserServices.updateUser(req.body.username, req.body.data));
         } catch (err) {
             return next(err);
         }
@@ -24,8 +24,7 @@ export const ProfileController = {
 
     deleteProfile: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await UserServices.deleteUser(req.body.token.username)
-            return res.redirect('/');
+            return res.json(await UserServices.deleteUser(req.body.username));
         } catch (err) {
             return next(err);
         }

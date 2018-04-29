@@ -1,13 +1,12 @@
-
 describe('config', () => {
     require('./config');
 });
 
 describe('models', () => {
-  require('./models');
+    require('./models');
 });
-/*
+
 describe('services', () => {
-  require('./services');
+    require('./services');
 });
-*/
+

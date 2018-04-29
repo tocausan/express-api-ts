@@ -18,12 +18,15 @@ export const UserServices = {
 
         addUser: async (data: any): Promise<User> => {
             if (_.isNil(data) || _.isNil(data.username) || _.isNil(data.password)) throw new Error(Translation[Config.language].EMPTY_DATA);
-            let user: User = new User(data);
-            user = new User(await DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user.store()));
-            const password: Password = new Password(data);
-            password.userId = user.id;
-            await DbClient.insertOneIfNotExist(Config.database.collections.passwords, {userId: user.id}, password);
-            return user;
+            try {
+                let user: User = new User(data);
+                user = new User(await DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user.store()));
+                await UserServices.setPassword(data.username, data.password);
+                await UserServices.setToken(data.username);
+                return user;
+            } catch (err) {
+                throw err;
+            }
         },
 
         getUsers: async (): Promise<User[]> => {
@@ -37,19 +40,28 @@ export const UserServices = {
             return new User((await DbClient.findOne(Config.database.collections.users, {username: username})));
         },
 
-        updateUser: async (username: string, update: string): Promise<User> => {
-            return new User(await (DbClient.findOneAndUpdate(Config.database.collections.users, {username: username}, update)))
+        updateUser: async (username: string, update: any): Promise<User> => {
+            const user: User = await UserServices.getUser(username);
+            return new User(await (DbClient.findOneAndUpdate(Config.database.collections.users, {_id: user.id}, update)))
         },
 
         deleteUser: async (username: string): Promise<void> => {
-            await DbClient.findOneAndDelete(Config.database.collections.users, {username: username});
-            await UserServices.deletePassword(username);
-            await UserServices.deleteToken(username);
+            try {
+                await DbClient.findOneAndDelete(Config.database.collections.users, {username: username})
+                await UserServices.deletePassword(username);
+                await UserServices.deleteToken(username);
+            } catch (err) {
+                throw err;
+            }
         },
 
-        getToken: async (username: string): Promise<Token> => {
+        setPassword: async (username: string, password: string): Promise<Password> => {
             const user: User = await UserServices.getUser(username);
-            return new Token(await DbClient.findOne(Config.database.collections.tokens, {userId: user.id}));
+            const psswrd: Password = new Password({
+                userId: user.id,
+                password: password
+            });
+            return await DbClient.insertOneIfNotExist(Config.database.collections.passwords, {userId: user.id}, psswrd);
         },
 
         getPassword: async (username: string): Promise<Password> => {
@@ -62,9 +74,20 @@ export const UserServices = {
             return DbClient.findOneAndDelete(Config.database.collections.passwords, {userId: user.id});
         },
 
+        setToken: async (username: string) => {
+            const user: User = await UserServices.getUser(username);
+            const token = new Token({userId: user.id});
+            return DbClient.findOneAndUpdateOrInsert(Config.database.collections.tokens, {userId: user.id}, token);
+        },
+
         deleteToken: async (username: string): Promise<void> => {
             const user: User = await UserServices.getUser(username);
             return DbClient.findOneAndDelete(Config.database.collections.tokens, {userId: user.id});
+        },
+
+        getToken: async (username: string): Promise<Token> => {
+            const user: User = await UserServices.getUser(username);
+            return new Token(await DbClient.findOne(Config.database.collections.tokens, {userId: user.id}));
         }
     }
 ;
