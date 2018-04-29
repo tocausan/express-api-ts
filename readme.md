@@ -60,6 +60,7 @@ GET     /api-docs                           swagger UI
 
 POST    /[APIVersion]/signin                signin
 POST    /[APIVersion]/login                 login
+POST    /[APIVersion]/check-token           check token
 
 ALL     /[APIVersion]/member/*              member role validation
 POST    /[APIVersion]/member/profile        get member profile
