@@ -1,5 +1,5 @@
 [![Build](https://img.shields.io/badge/build-passing-green.svg?style=flat-square)](http://tocausan.github.io)
-[![Build](https://img.shields.io/badge/version-0.3.0-D07183.svg?style=flat-square)](http://tocausan.github.io)
+[![Build](https://img.shields.io/badge/version-1.0.0-D07183.svg?style=flat-square)](http://tocausan.github.io)
 
 # express-api-ts
 

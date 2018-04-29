@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.3.0",
+    "version": "1.0.0",
     "title": "express-api-ts"
   },
   "host": "localhost:3000",
