@@ -14,15 +14,13 @@ export const AuthServices = {
             username: username,
             password: password
         };
-
-        return UserServices.addUser(data)
-            .then((user: User) => {
-                const token = new Token(data);
-                return AuthServices.setToken(user, token);
-            })
+        const user = await UserServices.addUser(data)
             .catch((err: Error) => {
                 throw err;
             });
+        const token = new Token(data);
+        token.userId = user.id;
+        return AuthServices.setToken(user, token);
     },
 
     login: async (username: string, password: string): Promise<Token> => {
