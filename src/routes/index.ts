@@ -21,6 +21,7 @@ export const Routes = express.Router()
     // PUBLIC
     .post(baseUrl + '/signin', AuthController.signin)
     .post(baseUrl + '/login', AuthController.login)
+    .post(baseUrl + '/check-token', AuthController.checkToken)
 
     // MEMBER
     .all(memberUrl + '/*', [ValidationMiddleware.isMember])

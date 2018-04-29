@@ -8,13 +8,13 @@ describe('Token', () => {
 
     describe('new Token()', () => {
         const token = new Token();
-        it('should return an object with [username, creation, expiration, hash]', () => {
+        it('should return an object with [userId, creation, expiration, hash]', () => {
             expect(token)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'hash', 'creation', 'expiration'])
+                .to.have.all.keys(['userId', 'hash', 'creation', 'expiration'])
         });
-        it('username should return an empty string', () => {
-            expect(token.username)
+        it('userId should return an empty string', () => {
+            expect(token.userId)
                 .to.be.a('string')
                 .to.be.equal('');
         });
@@ -31,25 +31,25 @@ describe('Token', () => {
         it('hash should return an hashed string', () => {
             expect(token.hash)
                 .to.be.a('string')
-                .to.be.equal(EncryptionServices.hash(token.username + token.creation + token.expiration, Config.encryption.iterations));
+                .to.be.equal(EncryptionServices.hash(token.userId + token.creation + token.expiration, Config.encryption.iterations));
         });
     });
 
     describe('new Token(data)', () => {
         it('should return a custom object', () => {
             const token = new Token({
-                username: 'username',
+                userId: 'userId',
                 creation: 'creation',
                 expiration: 'expiration',
                 hash: 'hash'
             });
-            it('should return an object with [username, creation, expiration, hash]', () => {
+            it('should return an object with [userId, creation, expiration, hash]', () => {
                 expect(token)
                     .to.be.a('object')
-                    .to.have.all.keys(['username', 'hash', 'creation', 'expiration'])
+                    .to.have.all.keys(['userId', 'hash', 'creation', 'expiration'])
             });
-            it('username should return a string equal to "username"', () => {
-                expect(token.username).to.be.equal('username');
+            it('userId should return a string equal to "userId"', () => {
+                expect(token.userId).to.be.equal('userId');
             });
             it('hash should return a string equal to "hash"', () => {
                 expect(token.hash).to.be.equal('hash');

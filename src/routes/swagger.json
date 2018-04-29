@@ -78,6 +78,37 @@
         }
       }
     },
+    "/check-token": {
+      "post": {
+        "summary": "check API token",
+        "tags": [
+          "Public"
+        ],
+        "operationId": "CheckToken",
+        "parameters": [
+          {
+            "name": "CheckToken",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CheckToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/components/schemas/Boolean"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
     "/member/profile": {
       "post": {
         "summary": "Get member profile",
@@ -354,6 +385,25 @@
           }
         }
       },
+      "CheckToken": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "Boolean": {
+        "type": "object",
+        "properties": {
+          "boolean": {
+            "type": "boolean"
+          }
+        }
+      },
       "Token": {
         "type": "object",
         "properties": {
@@ -374,9 +424,11 @@
       "Request": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           }
         }
       },
@@ -390,19 +442,7 @@
           "username": {
             "type": "string"
           },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "birthday": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "picture": {
+          "email": {
             "type": "string"
           },
           "language": {
@@ -416,9 +456,11 @@
       "UpdateProfile": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           },
           "data": {
             "type": "object",
@@ -429,18 +471,22 @@
       "DeleteProfile": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           }
         }
       },
       "GetUser": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           },
           "user": {
             "type": "object",
@@ -451,9 +497,11 @@
       "CreateUser": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           },
           "data": {
             "type": "object",
@@ -464,9 +512,11 @@
       "UpdateUser": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           },
           "user": {
             "type": "object",
@@ -481,9 +531,11 @@
       "DeleteUser": {
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string"
+          },
           "token": {
-            "type": "object",
-            "$ref": "#/components/schemas/Token"
+            "type": "string"
           },
           "user": {
             "type": "object",

@@ -6,10 +6,10 @@ describe('User', () => {
 
     describe('new User()', () => {
         const user = new User();
-        it('should return an object with [username, language, role, email]', () => {
+        it('should return an object with [id, username, language, role, email]', () => {
             expect(user)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'language', 'role', 'email']);
+                .to.have.all.keys(['id', 'username', 'language', 'role', 'email']);
         });
         it('email should return ""', () => {
             expect(user.email).to.be.equal('');
@@ -33,10 +33,10 @@ describe('User', () => {
             token: 'token',
             role: 0
         });
-        it('should return an object with [username, language, role, email]', () => {
+        it('should return an object with [id, username, language, role, email]', () => {
             expect(user)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'language', 'role', 'email']);
+                .to.have.all.keys(['id', 'username', 'language', 'role', 'email']);
         });
         it('username should return "username"', () => {
             expect(user.username).to.be.equal('username');

@@ -8,10 +8,10 @@ let testUser = {
     passwordConfirmation: 'test'
 };
 
-describe('users', function () {
+describe('users', () => {
 
-    describe('insertOne', function () {
-        it('should return an object', function () {
+    describe('insertOne', () => {
+        it('should return an object', () => {
             usersServices.insertOne(testUser).then(result => {
                 if (result) {
                     expect(result)
@@ -23,8 +23,8 @@ describe('users', function () {
         });
     });
 
-    describe('findAll', function () {
-        it('should return an array', function () {
+    describe('findAll', () => {
+        it('should return an array', () => {
             usersServices.findAll().then(result => {
                 if (result) {
                     expect(result)
@@ -36,8 +36,8 @@ describe('users', function () {
         });
     });
 
-    describe('findOneByUsername', function () {
-        it('should return an object', function () {
+    describe('findOneByUsername', () => {
+        it('should return an object', () => {
             usersServices.findOneByUsername('test').then(result => {
                 if (result) {
                     expect(result)
@@ -52,8 +52,8 @@ describe('users', function () {
         });
     });
 
-    describe('findOneAndUpdateByUsername', function () {
-        it('should return an object', function () {
+    describe('findOneAndUpdateByUsername', () => {
+        it('should return an object', () => {
             usersServices.findOneAndUpdateByUsername('test', testUser).then(result => {
                 if (result) {
                     expect(result)
@@ -68,8 +68,8 @@ describe('users', function () {
         });
     });
 
-    describe('findOneAndDeleteByUsername', function () {
-        it('should return an object', function () {
+    describe('findOneAndDeleteByUsername', () => {
+        it('should return an object', () => {
             usersServices.findOneAndDeleteByUsername('test', {username: 'test'}).then(result => {
                 if (result) {
                     expect(result)

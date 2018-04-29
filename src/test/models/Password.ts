@@ -4,22 +4,22 @@ import {Password} from "../../models";
 describe('Password', () => {
 
     describe('new Password()', () => {
-        it('should return an object with [username, iterations, salt, hash]', () => {
+        it('should return an object with [userId, iterations, salt, hash]', () => {
             expect(new Password())
                 .to.be.a('object')
-                .to.have.all.keys(['iterations', 'salt', 'username', 'hash']);
+                .to.have.all.keys(['userId', 'iterations', 'salt', 'hash']);
         });
     });
 
     describe('new Password()', () => {
         const password = new Password();
-        it('should return an object with [username, iterations, salt, hash]', () => {
+        it('should return an object with [userId, iterations, salt, hash]', () => {
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'iterations', 'salt', 'hash']);
+                .to.have.all.keys(['userId', 'iterations', 'salt', 'hash']);
         });
-        it('username should return a string not empty', () => {
-            expect(password.username).to.be.a('string')
+        it('userId should return a string not empty', () => {
+            expect(password.userId).to.be.a('string')
                 .to.be.equal('');
         });
         it('iterations should return a number', () => {
@@ -35,20 +35,20 @@ describe('Password', () => {
 
     describe('new Password(data)', () => {
         const password = new Password({
+            userId: 'userId',
             iterations: 1,
             salt: 'salt',
-            username: 'username',
             password: 'password',
             hash: 'hash'
         });
-        it('should return an object with [username, iterations, salt, hash]', () => {
+        it('should return an object with [userId, iterations, salt, hash]', () => {
             expect(password)
                 .to.be.a('object')
-                .to.have.all.keys(['username', 'iterations', 'salt', 'hash']);
+                .to.have.all.keys(['userId', 'iterations', 'salt', 'hash']);
         });
-        it('username should return a string equal to "username"', () => {
-            expect(password.username).to.be.a('string')
-                .to.be.equal('username');
+        it('userId should return a string equal to "userId"', () => {
+            expect(password.userId).to.be.a('string')
+                .to.be.equal('userId');
         });
         it('iterations should return a number equal to 1', () => {
             expect(password.iterations).to.be.a('number')

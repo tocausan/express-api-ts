@@ -6,14 +6,14 @@ import {Translation} from "../translations";
 
 export const UserServices = {
 
-        isTokenValid: async (username: string, token: string): Promise<void> => {
+        isTokenValid: async (username: string, token: string): Promise<boolean> => {
             return DbClient.findOne(Config.database.collections.tokens, {username: username})
                 .then((userToken: Token) => {
                     const now = moment.utc().format();
                     if (userToken &&
                         userToken.hash === token &&
                         userToken.expiration > now &&
-                        userToken.creation <= now) return;
+                        userToken.creation <= now) return true;
                     else throw new Error(Translation[Config.language].INVALID_TOKEN);
                 });
         },
@@ -22,14 +22,13 @@ export const UserServices = {
             if (_.isNil(data) || _.isNil(data.username) || _.isNil(data.password)) throw new Error(Translation[Config.language].EMPTY_DATA);
             const user = new User(data);
             const password = new Password(data);
-            return DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user)
-                .then((user: User) => {
-                    return DbClient.insertOneIfNotExist(Config.database.collections.passwords, {username: password.username}, password)
+            return DbClient.insertOneIfNotExist(Config.database.collections.users, {username: user.username}, user.store())
+                .then(() => {
+                    return DbClient.insertOneIfNotExist(Config.database.collections.passwords, {userId: user.id}, password)
                         .then(() => {
                             return user;
                         });
                 });
-
         },
 
         getUsers: (): Promise<User[]> => {
@@ -65,26 +64,30 @@ export const UserServices = {
                 });
         },
 
-        getToken: (username: string): Promise<Token> => {
-            return DbClient.findOne(Config.database.collections.tokens, {username: username})
+        getToken: async (username: string): Promise<Token> => {
+            const user: User = await UserServices.getUser(username);
+            return DbClient.findOne(Config.database.collections.tokens, {userId: user.id})
                 .then((data: any) => {
                     return new Token(data);
                 });
         },
 
-        getPassword: (username: string): Promise<Password> => {
-            return DbClient.findOne(Config.database.collections.passwords, {username: username})
+        getPassword: async (username: string): Promise<Password> => {
+            const user: User = await UserServices.getUser(username);
+            return DbClient.findOne(Config.database.collections.passwords, {userId: user.id})
                 .then((data: any) => {
                     return new Password(data);
                 });
         },
 
-        deletePassword: (username: string): Promise<void> => {
-            return DbClient.findOneAndDelete(Config.database.collections.passwords, {username: username});
+        deletePassword: async (username: string): Promise<void> => {
+            const user: User = await UserServices.getUser(username);
+            return DbClient.findOneAndDelete(Config.database.collections.passwords, {userId: user.id});
         },
 
-        deleteToken: (username: string): Promise<void> => {
-            return DbClient.findOneAndDelete(Config.database.collections.tokens, {username: username});
+        deleteToken: async (username: string): Promise<void> => {
+            const user: User = await UserServices.getUser(username);
+            return DbClient.findOneAndDelete(Config.database.collections.tokens, {userId: user.id});
         }
     }
 ;
